@@ -334,6 +334,11 @@ Ou seja, nosso **objetivo** é
 
 OBS: o EQM é a nossa **Função de Custo**.
 
+```{r, echo=TRUE}
+# lembrete: exercício 1 do script!
+```
+
+
 ---
 
 ## Qual o valor ótimo para $\beta_0$ e $\beta_1$?

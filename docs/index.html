@@ -263,6 +263,12 @@ Ou seja, nosso **objetivo** é
 
 OBS: o EQM é a nossa **Função de Custo**.
 
+
+```r
+# lembrete: exercício 1 do script!
+```
+
+
 ---
 
 ## Qual o valor ótimo para `\(\beta_0\)` e `\(\beta_1\)`?
@@ -330,7 +336,7 @@ Exemplo: relação entre População Urbana e Assassinatos.
 
 .pull-left[
 
-![](index_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 Modelo proposto: 
 
@@ -488,7 +494,7 @@ Então agora podemos tomar decisão! Se a estimativa cair muito distante da dist
 
 .pull-left[
 
-![](index_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 $$
 y = \color{darkgblue}{\beta_0} + \color{darkgreen}{\beta_1}x
@@ -567,7 +573,7 @@ $$
 
 .pull-left[
 
-&lt;img src="index_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
 
 ]
 
@@ -610,7 +616,7 @@ Em que `\(p\)` é o número de parâmetros do modelo (no caso da regressão line
 
 ## Outliers
 
-&lt;img src="index_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 Resíduo = `\(y_i - \hat{y}_i\)` (observado - esperado).
 
@@ -663,7 +669,7 @@ Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Lear
 
 Modelo: `lm(mpg ~ disp + wt, data = mtcars)`
 
-&lt;img src="index_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 
 .footnote[
 Fonte: [sthda.com/impressive-package-for-3d](http://www.sthda.com/english/wiki/impressive-package-for-3d-and-4d-graph-r-software-and-data-visualization)
@@ -677,7 +683,7 @@ Fonte: [sthda.com/impressive-package-for-3d](http://www.sthda.com/english/wiki/i
 
 Saldo médio no cartão de crédito é diferente entre homens e mulheres?
 
-![](index_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
 
 
 ```r
@@ -702,7 +708,7 @@ Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Lear
 
 Saldo médio no cartão de crédito é diferente entre homens e mulheres?
 
-![](index_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
 
 
 $$
@@ -729,7 +735,7 @@ Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Lear
 
 .pull-left[
 
-![](index_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
 
 
@@ -866,7 +872,7 @@ Modelo proposto: `\(\small y = \beta_0 + \beta_1log(x)\)`
 ]
 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-28-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-29-1.png" style="display: block; margin: auto;" /&gt;
 
 Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
 
@@ -891,7 +897,7 @@ Modelo proposto: `\(y = \beta_0 + \beta_1x + \beta_2x^2 + \beta_3x^3\)`
 ]
 
 
-![](index_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
 
 
 ```r
@@ -907,7 +913,7 @@ Modelo proposto (Matemático): Seja `Sepal.Width` o `\(y\)` e `Sepal.Length` o `
 `$$\small \begin{array}{l} y = \beta_0 + \beta_1x + \beta_2I_{versicolor} + \beta_3I_{virginica} + \beta_4\color{red}{xI_{versicolor}} + \beta_5\color{red}{xI_{virginica}}\end{array}$$`
 
 
-&lt;img src="index_files/figure-html/unnamed-chunk-32-1.png" height="260" style="display: block; margin: auto;" /&gt;
+&lt;img src="index_files/figure-html/unnamed-chunk-33-1.png" height="260" style="display: block; margin: auto;" /&gt;
 
 
 Modelo proposto (em R): `Sepal.Width ~ Sepal.Length * Species`
@@ -924,7 +930,7 @@ Modelo proposto (em R): `Sepal.Width ~ Sepal.Length * Species`
 
 .pull-left[
 
-![](index_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -1132,7 +1138,7 @@ plot_features(explicacoes)
 
 .pull-right[
 
-![](index_files/figure-html/unnamed-chunk-47-1.png)&lt;!-- --&gt;
+![](index_files/figure-html/unnamed-chunk-48-1.png)&lt;!-- --&gt;
 
 ]
 
