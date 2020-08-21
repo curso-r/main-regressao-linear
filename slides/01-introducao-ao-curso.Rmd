@@ -115,7 +115,27 @@ knitr::include_graphics("img/01-introducao-ao-curso/linha_do_tempo.png", dpi = 1
 
 
 ---
-## Perguntas e Respostas
 
-O discourse da curso-R é uma comunidade de pessoas que se ajudam. Um "stack overflow" sobre R e ciẽncia de dados em português.
+## Comunidade 
+
+.pull-left[
+
+<center>
+<a href = "discourse.curso-r.com">
+<img src="img/01-introducao-ao-curso/discourse.jpg" width = 100%> 
+</a>
+</center>
+
+]
+
+.pull-right[
+
+O discourse da curso-R é uma comunidade de pessoas que se ajudam em dúvidas sobre R e ciência de dados.
+
+Todos os professores da Curso-R também respondem por lá.
+
+### [discourse.curso-r.com]()
+
+]
+
 
