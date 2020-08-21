@@ -1,0 +1,121 @@
+---
+title: "Regressão Linear com R"
+subtitle: "Introdução ao curso"
+author: "<img src = 'https://d33wubrfki0l68.cloudfront.net/9b0699f18268059bdd2e5c21538a29eade7cbd2b/67e5c/img/logo/cursor1-5.png' width = '30%'>"
+date: "`r paste(lubridate::month(Sys.Date(), label = TRUE, abbr = FALSE, locale = 'pt_BR.UTF-8'), 'de', lubridate::year(Sys.Date()))`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: "css/xaringan-themer.css"
+    nature:
+      ratio: '16:9'
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+class: middle, center, inverse
+# Sobre a Curso-R
+
+---
+## Curso-R
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("img/01-introducao-ao-curso/professores.png", dpi = 260)
+```
+
+---
+## Linha do tempo
+
+```{r, echo=FALSE, fig.align='center'}
+knitr::include_graphics("img/01-introducao-ao-curso/linha_do_tempo.png", dpi = 120)
+```
+
+---
+## Nossos cursos
+
+<div>
+  <div class="pull-left">
+    <div class="container center">
+      <div class="card">
+        <h4>Programação em R</h4>
+        <hr style="background-color:#3bb44a;"/>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/r4ds-1/">R para Ciência de Dados I</a>
+        </p>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/r4ds-2/">R para Ciência de Dados II</a>
+        </p>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/rcpp/">Introdução ao R com C++</a>
+        </p>
+      </div>
+    </div>
+    <br/>
+    <div class="container center">
+      <div class="card">
+        <h4>Modelagem</h4>
+        <hr style="background-color:#996699;"/>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/regressao-linear/">Regressão linear</a>
+        </p>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/intro-machine-learning/">Machine Learning</a>
+        </p>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/xgboost/">XGBoost</a>
+        </p>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/deep-learning/">Deep Learning</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="pull-right">
+    <div class="container center">
+      <div class="card">
+        <h4>Extração de dados</h4>
+        <hr style="background-color:#eeba30;"/>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/web-scraping/">Web scraping</a>
+        </p>
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="container center">
+      <div class="card">
+        <h4>Comunicação e automação</h4>
+        <hr style="background-color:#ff6699;"/>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/dashboards/">Dashboards</a>
+        </p>
+        <p style='font-size:16px'>
+          <a href="https://www.curso-r.com/cursos/deploy/">Deploy</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+## Dinâmica curso
+
+- As aulas serão (quase totalmente) expositivas.
+
+- Teremos exercícios para serem feitos "em casa".
+
+- Os exercícios não serão avaliações, isto é, não terá nota. O objetivo deles será gerar dúvidas, para que possamos melhor orientá-las(los) durante o curso. Entretanto, **é preciso entregar os exercícios para receber o certificado**.
+
+- A gravação das aulas ficará disponível no Google Classroom por 1 ano após o final do curso.
+
+
+---
+## Perguntas e Respostas
+
+O discourse da curso-R é uma comunidade de pessoas que se ajudam. Um "stack overflow" sobre R e ciẽncia de dados em português.
+

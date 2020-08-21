@@ -8,6 +8,7 @@ library(car)
 library(ISLR)
 library(tidymodels)
 library(tidyverse)
+library(skimr)
 
 
 #--------------------------------------------------
