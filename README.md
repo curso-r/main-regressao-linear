@@ -10,9 +10,10 @@ Inscreva-se no curso: <https://www.curso-r.com/cursos/regressao-linear/>
 **Acesse o material completo do curso escolhendo uma das turmas
 abaixo**.
 
-| Turma         | Material                                            | Github                                               |
-| :------------ | :-------------------------------------------------- | :--------------------------------------------------- |
-| Março de 2020 | <https://curso-r.github.io/202003-regressao-linear> | <https://github.com/curso-r/202003-regressao-linear> |
+| Turma          | Material                                            | Github                                               |
+| :------------- | :-------------------------------------------------- | :--------------------------------------------------- |
+| agosto de 2020 | <https://curso-r.github.io/202008-regressao-linear> | <https://github.com/curso-r/202008-regressao-linear> |
+| março de 2020  | <https://curso-r.github.io/202003-regressao-linear> | <https://github.com/curso-r/202003-regressao-linear> |
 
 # Ementa
 
