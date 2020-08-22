@@ -15,7 +15,7 @@ output:
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(echo = FALSE, dpi=300)
+knitr::opts_chunk$set(echo = FALSE, dpi=300, message = FALSE, warning = FALSE)
 library(MASS)
 library(plot3D)
 library(lime)
@@ -511,7 +511,27 @@ No nosso exemplo, a hipótese é $H_0: \beta_1 = 0$, então
 
 $$t = \frac{0.02 - 0}{0.04} = 0.48$$
 
-![distrib_params](img/teste_t.png)
+```{r, fig.height=2, fig.width=4}
+
+df <- tibble(x = seq(-2, 4, l = 1000), y = ifelse(x < 0, 0, dt(x, df = 48)))
+
+t = 0.48
+pn = scales::percent((1-pt(t, df = 48))*2, accuracy = 1)
+
+ggplot() +
+  geom_line(aes(x, y), data = df) +
+  geom_area(aes(x, y), data = df %>% filter(x > t), fill = "purple", alpha = 0.2) +
+  geom_vline(xintercept = t, colour = "purple", size = 1) +
+  ylim(c(0, 0.5)) +
+  labs(x = "Distribuição |t|(50 - 2)") +
+  annotate("label", x = t+0.01, y =  0.47, colour = "white", fill = "purple", size = 4, label = glue::glue("|t| = {round(t,2)}")) +
+  annotate("point", x = t+0.65, y = 0.13, colour = "purple", size = 4) +
+  annotate("curve", x = t+0.65, y = 0.13, xend = t+1.45, yend = 0.27, colour = "purple", size = 1, arrow = arrow(length = unit(0.08, "inches")), curvature = -0.3) +
+  annotate("text", x = t+1.5, y = 0.27, colour = "purple", size = 4, label = glue::glue("p-value = {pn}\n(área)"), hjust = 0) +
+  theme_minimal(12) +
+  theme(axis.title.y = element_blank(), axis.text.y = element_blank())
+```
+
 
 ]
 
@@ -707,13 +727,31 @@ cars_com_predicoes_outliers <- cars_com_predicoes %>%
   mutate(outlier = 13 == 1:nrow(.),
          .resid = ifelse(outlier, 130, .resid)) 
 
-cars_com_predicoes_outliers %>%
+graf_outlier <-cars_com_predicoes_outliers %>%
   ggplot(aes(x = speed, y = .resid)) +
   coord_cartesian(ylim = c(-50, 135)) +
   geom_point(size = 6, colour = "red", data = cars_com_predicoes_outliers %>% filter(outlier), alpha = 0.6) +
-  labs(x = "Valores preditos", y = "Resíduos")+
+  labs(x = "Valores preditos", y = "Resíduos", title = "Apenas erro grande")+
   geom_point(size = 2) +
-  theme_minimal(18)
+  theme_minimal(18) +
+  xlim(c(4, 29))
+
+cars_com_predicoes_alavanca <- cars_com_predicoes %>%
+  mutate(outlier = 13 == 1:nrow(.),
+         .resid = ifelse(outlier, 130, .resid),
+         speed = ifelse(outlier, 28, speed),
+         dist = ifelse(outlier, 150, dist)) 
+
+graf_alavanca <-cars_com_predicoes_alavanca %>%
+  ggplot(aes(x = speed, y = .resid)) +
+  coord_cartesian(ylim = c(-50, 135)) +
+  geom_point(size = 6, colour = "red", data = cars_com_predicoes_alavanca %>% filter(outlier), alpha = 0.6) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "Alavanca")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(4, 29))
+
+graf_outlier
 ```
 
 Resíduo = $y_i - \hat{y}_i$ (observado - esperado).
@@ -725,6 +763,126 @@ Resíduo = $y_i - \hat{y}_i$ (observado - esperado).
 .footnote[
 Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 96 (Outliers).
 ]
+
+
+
+---
+
+## Outliers
+
+```{r, fig.align="center", fig.height=4, fig.width=9}
+graf_alavanca
+```
+
+Resíduo = $y_i - \hat{y}_i$ (observado - esperado).
+
+```{r, echo = TRUE}
+# lembrete: faça o exercício 7 do script
+```
+
+.footnote[
+Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 96 (Outliers).
+]
+
+---
+
+## Outliers
+
+```{r, fig.align="center", fig.height=6, fig.width=10, dpi = 300}
+graf_alavanca1 <- cars_com_predicoes_alavanca %>%
+  ggplot(aes(x = speed, y = dist)) +
+  geom_point(size = 2, alpha = 0) +
+  geom_point(size = 2, data = cars_com_predicoes) +
+  geom_abline(
+    intercept = melhor_reta$coefficients[1], 
+    slope =     melhor_reta$coefficients[2], 
+    size = 1,
+    colour = "salmon"
+  ) +
+  theme_minimal(18)
+graf_alavanca1
+```
+
+.footnote[
+Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 96 (Outliers).
+]
+
+---
+
+## Outliers
+
+```{r, fig.align="center", fig.height=6, fig.width=10, dpi = 300}
+graf_alavanca1 +
+  geom_abline(
+    intercept = melhor_reta$coefficients[1] - 9, 
+    slope =     melhor_reta$coefficients[2] + 1.2, 
+    size = 1,
+    colour = "royalblue"
+  ) +
+  geom_point(size = 6, colour = "red", data = cars_com_predicoes_alavanca %>% dplyr::filter(outlier), alpha = 0.6) +
+  geom_point(size = 2, colour = "black", data = cars_com_predicoes_alavanca %>% dplyr::filter(outlier))
+```
+
+.footnote[
+Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 96 (Outliers).
+]
+
+
+---
+
+## Outliers
+
+### Distância de Cook
+
+.pull-left[
+
+A distância de Cook mede o efeito de excluir uma dada observação.
+
+$$D_i = \frac{\sum_{j=1}^{n}(\hat{y}_j - \hat{y}_{j(i)})^2}{p EQM}$$
+
+```{r, eval = FALSE, echo = TRUE}
+modelo <- lm(dist ~ speed, data = cars)
+plot(modelo)
+cooks.distance(modelo)
+```
+]
+
+.pull-right[
+
+```{r, echo = FALSE, fig.height=6}
+plot(lm(dist ~ speed, data = cars %>% add_row(speed = 40, dist = 1)), 5)
+```
+
+]
+
+
+.footnote[
+Ver [Distância de Cook na Wikipedia](https://pt.wikipedia.org/wiki/Dist%C3%A2ncia_de_Cook).
+]
+
+
+---
+
+## Outliers
+
+### Diagnóstico
+
+- Visualização univariada (histograma, boxplot);
+
+- Comparação do valor com o desvio padrão;
+
+- Distância de Cook
+
+### Tratamentos
+
+- Transformações log(), etc;
+
+- Categorização;
+
+- Remover os valores extremos (raramente boa ideia);
+
+
+
 
 ---
 
@@ -765,7 +923,8 @@ Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Lear
 
 Modelo: `lm(mpg ~ disp + wt, data = mtcars)`
 
-```{r, fig.height=4, fig.align="center", fig.width=7}
+
+```{r, fig.height=1.2, fig.align="center", fig.width=2, echo=FALSE, message=FALSE, warning=FALSE}
 # x, y, z variables
 x <- mtcars$wt
 y <- mtcars$disp
@@ -779,19 +938,19 @@ y.pred <- seq(min(y), max(y), length.out = grid.lines)
 xy <- expand.grid( x = x.pred, y = y.pred)
 z.pred <- matrix(predict(fit, newdata = xy), 
                  nrow = grid.lines, ncol = grid.lines)
-# fitted points for droplines to surface
-fitpoints <- predict(fit)
-# scatter plot with regression plane
-scatter3D(x, y, z, pch = 18, cex = 2, 
-          theta = 20, phi = 20, ticktype = "detailed",
-          xlab = "wt", ylab = "disp", zlab = "mpg",  
-          surf = list(x = x.pred, y = y.pred, z = z.pred,  
-                      facets = NA, fit = fitpoints))
+library(plotly)
+fig <- plot_ly(data = mtcars) %>% 
+  add_trace(x = ~wt, y = ~disp, z = ~mpg, 
+            type = "scatter3d", mode = "markers",
+            opacity = .8) %>%
+  add_trace(z = z.pred,
+            x = x.pred,
+            y = y.pred,
+            type = "surface",
+            opacity = .9)
+fig
 ```
 
-.footnote[
-Fonte: [sthda.com/impressive-package-for-3d](http://www.sthda.com/english/wiki/impressive-package-for-3d-and-4d-graph-r-software-and-data-visualization)
-]
 
 ---
 
@@ -846,7 +1005,7 @@ y_i = \beta_0 + \beta_1x_i \space\space\space\space\space\space \text{em que}\sp
 $$
 
 ```{r, echo = TRUE}
-# lembrete: exercícios 8 e 9 do script!
+# lembrete: exercícios 8, 9 e 10 do script!
 ```
 
 
@@ -914,10 +1073,6 @@ Credit %>% slice(1:8) %>% select(Ethnicity) %>%
   knitr::kable(format = "html")
 ```
 
-```{r, echo = TRUE}
-# lembrete: exercício 10 do script!
-```
-
 ---
 
 ## Preditores Categóricos
@@ -930,7 +1085,7 @@ $y_{i} = \left\{ \begin{array}{ll} \beta_0 & \text{se for }\texttt{Afro American
 
 ```{r, echo = TRUE}
 # interprete cada um dos três parâmetros individualmente.
-# lembrete: exercícios 10 e 11 do script!
+# lembrete: exercício 11 do script!
 ```
 
 
@@ -963,13 +1118,13 @@ grafico_y_x_curvas <- grafico_y_x +
   geom_smooth(aes(colour = "y ~ x"), method = "lm", se = FALSE, formula = y ~ x) +
   geom_smooth(aes(colour = "y ~ log(x)"), method = "lm", se = FALSE, formula = y ~ log(x)) +
   labs(colour = "Modelo") +
-  theme(legend.position = "left") 
+  theme(legend.position = "right") 
 
 grafico_y_x_log <- grafico_y_x + scale_x_log10() + labs(x = "x (escala logarítmica)")
 ```
 
 ```{r, fig.width=9, fig.height=3, fig.align="center"}
-grafico_y_x_curvas + grafico_y_x_log
+grafico_y_x + grafico_y_x_curvas
 ```
 
 Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
@@ -983,18 +1138,73 @@ Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
 
 ## Transformações Não Lineares dos Preditores
 
+### Exemplo: log
+
+
+.pull-left[
+Modelo real: $y = 10 + 0.5log(x)$ 
+]
+
+.pull-right[
+Modelo proposto: $\small y = \beta_0 + \beta_1log(x)$ 
+]
+
+```{r, fig.width=9, fig.height=3, fig.align="center"}
+grafico_y_x_log + grafico_y_x_curvas 
+```
+
+Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
+
+```{r, echo = TRUE}
+# lembrete: exercício 12 do script!
+```
+
+
+---
+
+## Transformações Não Lineares dos Preditores
+
+### Gráfico de Resíduos
+```{r,  message = FALSE, warning=FALSE, fig.width=8, fig.height=4, fig.align="center"}
+mod_sem_log <- lm(y ~ x, data = y_x)
+mod_com_log <- lm(y ~ log(x), data = y_x)
+
+y_x_com_preds <- y_x %>%
+  mutate(
+    pred_sem_log = predict(mod_sem_log, .),
+    pred_com_log = predict(mod_com_log, .)
+  )
+
+grafico_de_residuos <- y_x_com_preds %>%
+  pivot_longer(starts_with("pred"), names_to = "modelo", values_to = "pred") %>%
+  mutate(
+    residuo = y - pred
+  ) %>%
+  group_by(modelo) %>%
+  mutate(
+    residuo = residuo/sd(residuo)
+  ) %>%
+  ggplot(aes(x = x, y = residuo, colour = modelo)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~modelo) +
+  ylim(c(-6, 6)) +
+  theme_minimal()
+
+(patchwork::plot_spacer() + grafico_y_x_curvas )/grafico_de_residuos
+```
+
+
+---
+
+## Transformações Não Lineares dos Preditores
+
 ### Exemplo: Regressão Polinomial
 
 .pull-left[
 Modelo real: $y = 500 + 0.4(x-10)^3$ 
-]
 
-.pull-right[
-Modelo proposto: $y = \beta_0 + \beta_1x + \beta_2x^2 + \beta_3x^3$ 
-]
-
-
-```{r, fig.height=4, fig.width=11}
+```{r, fig.height=4, fig.width=5}
 set.seed(1)
 y_x_poly <- tibble(
   x = runif(30, 0, 20),
@@ -1006,14 +1216,29 @@ grafico_y_x_poly <- y_x_poly %>%
   ggplot(aes(x = x, y = y)) + 
   geom_point( size = 3) 
 
+grafico_y_x_poly
+```
+
+]
+
+.pull-right[
+Modelo proposto: $y = \beta_0 + \beta_1x + \beta_2x^2 + \beta_3x^3$ 
+
+
+```{r, fig.height=4, fig.width=6}
 
 grafico_y_x_poly_curvas <- grafico_y_x_poly +
   geom_smooth(aes(colour = "y ~ x"), method = "lm", se = FALSE, formula = y ~ x) +
   geom_smooth(aes(colour = "y ~ poly(x, 2)"), method = "lm", se = FALSE, formula = y ~ poly(x, 2)) +
   geom_smooth(aes(colour = "y ~ poly(x, 3)"), method = "lm", se = FALSE, formula = y ~ poly(x, 3)) +
   labs(colour = "Modelo") 
-grafico_y_x_poly + grafico_y_x_poly_curvas
+
+grafico_y_x_poly_curvas
 ```
+
+]
+
+
 
 ```{r, echo = TRUE}
 # lembrete: exercício 13 do script!
@@ -1021,9 +1246,162 @@ grafico_y_x_poly + grafico_y_x_poly_curvas
 
 ---
 
+## Transformações Não Lineares dos Preditores
+
+### Exemplo: Regressão Polinomial
+
+.pull-left[
+Modelo real: $y = 500 + 0.4(x-10)^3$ 
+
+
+```{r, fig.height=4, fig.width=5}
+grafico_y_x_poly
+```
+
+]
+
+.pull-right[
+Modelo proposto: $y = \beta_0 + \beta_1x + \beta_2x^2 + \beta_3x^3$ 
+
+```{r}
+y_x_poly %>%
+  mutate(
+    y = y,
+    x = x,
+    x2 = x^2,
+    x3 = x^3
+  ) %>%
+  head(7) %>%
+  relocate(y, .before = x) %>%
+  knitr::kable(format = "html", escape = FALSE, digits = 1) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
+  kableExtra::kable_styling(font_size = 16)
+```
+
+]
+
+
+```{r, echo = TRUE}
+# lembrete: exercício 13 do script!
+```
+
+
+---
+
+
+## Transformações Não Lineares dos Preditores
+
+### Gráfico de Resíduos
+```{r,  message = FALSE, warning=FALSE, fig.width=8, fig.height=4.5, fig.align="center"}
+mod_poly_1 <- lm(y ~ x, data = y_x_poly)
+mod_poly_2 <- lm(y ~ poly(x, 2), data = y_x_poly)
+mod_poly_3 <- lm(y ~ poly(x, 3), data = y_x_poly)
+
+y_x_com_preds <- y_x_poly %>%
+  mutate(
+    `y ~ x` = predict(mod_poly_1, .),
+    `y ~ poly(x, 2)` = predict(mod_poly_2, .),
+    `y ~ poly(x, 3)` = predict(mod_poly_3, .)
+  )
+
+grafico_de_residuos <- y_x_com_preds %>%
+  pivot_longer(contains("y ~ "), names_to = "modelo", values_to = "pred") %>%
+  mutate(
+    residuo = y - pred
+  ) %>%
+  group_by(modelo) %>%
+  mutate(
+    residuo = residuo/sd(residuo)
+  ) %>%
+  ggplot(aes(x = x, y = residuo, colour = modelo)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~modelo) +
+  ylim(c(-6, 6)) +
+  theme_minimal()
+
+(patchwork::plot_spacer() + patchwork::plot_spacer()+ grafico_y_x_poly_curvas+theme(legend.position = "right") )/grafico_de_residuos
+```
+
+
+
+---
+
 ## Interações
 
-Modelo proposto (Matemático): Seja `Sepal.Width` o $y$ e `Sepal.Length` o $x$,
+Interação entre duas variáveis explicativas: `Species` e `Sepal.Length`
+
+```{r, out.height=180, out.height=330, fig.height=2.5, fig.width=4.5, fig.align="center"}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  geom_smooth(method = "lm", aes(colour = Species), se = FALSE) +
+  theme_minimal(10)
+```
+
+
+
+---
+
+## Interações
+
+Modelo proposto (Matemático): Seja `y = Sepal.Width` e `x = Sepal.Length`,
+
+$$\small \begin{array}{l} y = \beta_0 + \beta_1x\end{array}$$
+
+
+
+```{r, out.height=180, out.height=260, fig.height=2, fig.width=4, fig.align="center"}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  theme_minimal(10)
+```
+
+
+Modelo proposto (em R): `Sepal.Width ~ Sepal.Length`
+
+```{r, echo = TRUE}
+# lembrete: exercícios 14 ao 17 do script!
+```
+
+---
+
+## Interações
+
+Modelo proposto (Matemático): Seja `y = Sepal.Width` e `x = Sepal.Length`,
+
+$$\small \begin{array}{l} y = \beta_0 + \beta_1x + \beta_2I_{versicolor} + \beta_3I_{virginica}\end{array}$$
+
+
+```{r, out.height=180, out.height=260, fig.height=2, fig.width=4, fig.align="center"}
+mod_iris <- lm(Sepal.Width ~ Sepal.Length + Species, data = iris)
+
+iris %>%
+  mutate(
+    pred = predict(mod_iris, .) 
+  ) %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  geom_line(aes(y = pred, colour = Species), size = 1) + 
+  theme_minimal(10)
+```
+
+
+Modelo proposto (em R): `Sepal.Width ~ Sepal.Length + Species`
+
+```{r, echo = TRUE}
+# lembrete: exercícios 14 ao 17 do script!
+```
+
+
+---
+
+## Interações
+
+Modelo proposto (Matemático): Seja `y = Sepal.Width` e `x = Sepal.Length`,
 
 $$\small \begin{array}{l} y = \beta_0 + \beta_1x + \beta_2I_{versicolor} + \beta_3I_{virginica} + \beta_4\color{red}{xI_{versicolor}} + \beta_5\color{red}{xI_{virginica}}\end{array}$$
 
@@ -1043,6 +1421,8 @@ Modelo proposto (em R): `Sepal.Width ~ Sepal.Length * Species`
 ```{r, echo = TRUE}
 # lembrete: exercícios 14 ao 17 do script!
 ```
+
+
 
 
 ---
