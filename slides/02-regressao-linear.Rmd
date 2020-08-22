@@ -27,10 +27,10 @@ library(tidyverse)
 theme_set(theme_minimal(12))
 ```
 
----
 
 ## Agenda
 
+.pull-left[
 - O que é e quando usar
 - Parâmetro vs estimador
 - Teste de Hipóteses e valor-p
@@ -44,12 +44,20 @@ theme_set(theme_minimal(12))
 - Multicolinearidade
 - Fazendo Predições
 - Interpretabilidade da Predição
+- Limitações da Regressão Linear
+- Exercício para casa
+
+]
+
+.pull-right[
+
 - Sobreajuste (overfitting)
 - Regularização
 - LASSO e Seleção de Preditores
 - Validação Cruzada
-- Limitações da Regressão Linear
-- Exercício para casa
+
+]
+
 
 ---
 
@@ -58,7 +66,7 @@ theme_set(theme_minimal(12))
 
 <br>
 <center>
-<a href = "https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf">
+<a href = "http://faculty.marshall.usc.edu/gareth-james/ISL/ISLR%20Seventh%20Printing.pdf">
 <img src="img/isl.jpg" width = 36%> 
 </a>
 </center>
@@ -637,6 +645,27 @@ lembrete: o banco de dados se chama `cars`.
 ### Exercício 4 do script: 
 
 Interprete o parâmetro $\beta_1$.
+
+---
+
+## Intervalo de confiança para $\beta_1$
+
+#### Intervalo de 95%
+$$[\hat{\beta} - 1,96 * \hat{\sigma}_{\beta_1}, \hat{\beta} + 1,96 * \hat{\sigma}_{\beta_1}]$$
+
+#### Intervalo de 90%
+$$[\hat{\beta} - 1,64 * \hat{\sigma}_{\beta_1}, \hat{\beta} + 1,64 * \hat{\sigma}_{\beta_1}]$$
+
+#### Intervalo de 1 - $\alpha$%
+
+$$[\hat{\beta}_1 - q_{\alpha} * \hat{\sigma}_{\beta_1}, \hat{\beta} + q_{\alpha} * \hat{\sigma}_{\beta_1}]$$
+
+em que $q_\alpha$ é o quantil da $Normal(0, 1)$.
+
+.footnote[
+Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 66 (Assessing the Accuracy of the Model).
+]
+
 
 ---
 
