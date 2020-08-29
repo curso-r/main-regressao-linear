@@ -1353,7 +1353,6 @@ grafico_de_residuos <- y_x_com_preds %>%
 ```
 
 
-
 ---
 
 ## Interações
@@ -1451,7 +1450,91 @@ Modelo proposto (em R): `Sepal.Width ~ Sepal.Length * Species`
 # lembrete: exercícios 14 ao 17 do script!
 ```
 
+---
 
+## Heterocedasticidade
+
+```{r, fig.height=4}
+set.seed(2)
+hetero_df <- tibble(
+  x = runif(100),
+  y = rnorm(100, mean = x, sd = x * 0.5)
+)
+
+ggplot(hetero_df, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+---
+
+## Heterocedasticidade
+
+
+```{r, fig.height=4}
+
+hetero_com_predicoes <- augment(lm(y ~ x, data = hetero_df))
+graf <-hetero_com_predicoes %>%
+  ggplot(aes(x = x, y = .resid)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "Y ~ X")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(0, 1)) +
+  ylim(c(-2, 2))
+
+
+hetero_log_com_predicoes <- augment(lm(log(y) ~ x, data = hetero_df))
+graf_log <-hetero_log_com_predicoes %>%
+  ggplot(aes(x = x, y = `log(y)` - .fitted)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "log(Y) ~ X")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(0, 1)) +
+  ylim(c(-2, 2))
+
+
+graf+graf_log
+```
+
+
+
+---
+
+## Heterocedasticidade
+
+```{r, fig.height=4}
+cars_log_com_predicoes <- augment(lm(log(dist) ~ log(speed), data = cars))
+graf <-cars_com_predicoes %>%
+  ggplot(aes(x = speed, y = .resid)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "Alavanca")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(4, 26))
+
+
+graf_log <- cars_log_com_predicoes %>%
+  ggplot(aes(x = `log(speed)`, y = `log(dist)` - .fitted)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "Alavanca")+
+  geom_point(size = 2) +
+  theme_minimal(18)
+
+
+graf+graf_log
+```
+
+
+---
+
+## Heterocedasticidade
+
+
+### Diagnóstico
+
+- Visualização dos resíduos;
+
+### Tratamentos
+
+- Transformações na variável resposta. log(), etc;
 
 
 ---
