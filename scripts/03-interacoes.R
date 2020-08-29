@@ -135,7 +135,7 @@ infos <- interacoes(c(
     ao_quadrado_do_B = 0, 
     ao_quadrado_do_C = 0
   ),
-  cores = FALSE
+  cores = TRUE
 )
 
 infos$summary
