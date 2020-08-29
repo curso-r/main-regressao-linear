@@ -1457,8 +1457,8 @@ Modelo proposto (em R): `Sepal.Width ~ Sepal.Length * Species`
 ```{r, fig.height=4}
 set.seed(2)
 hetero_df <- tibble(
-  x = runif(100),
-  y = rnorm(100, mean = x, sd = x * 0.5)
+  x = runif(50),
+  y = rnorm(50, mean = x, sd = x * 0.5)
 )
 
 ggplot(hetero_df, aes(x, y)) +
@@ -1472,8 +1472,8 @@ ggplot(hetero_df, aes(x, y)) +
 
 
 ```{r, fig.height=4}
-
-hetero_com_predicoes <- augment(lm(y ~ x, data = hetero_df))
+hetero_mod <- lm(y ~ x, data = hetero_df)
+hetero_com_predicoes <- augment(hetero_mod)
 graf <-hetero_com_predicoes %>%
   ggplot(aes(x = x, y = .resid)) +
   labs(x = "Valores preditos", y = "Resíduos", title = "Y ~ X")+
@@ -1482,8 +1482,8 @@ graf <-hetero_com_predicoes %>%
   xlim(c(0, 1)) +
   ylim(c(-2, 2))
 
-
-hetero_log_com_predicoes <- augment(lm(log(y) ~ x, data = hetero_df))
+hetero_mod_log <- lm(log(y) ~ x, data = hetero_df)
+hetero_log_com_predicoes <- augment(hetero_mod_log)
 graf_log <-hetero_log_com_predicoes %>%
   ggplot(aes(x = x, y = `log(y)` - .fitted)) +
   labs(x = "Valores preditos", y = "Resíduos", title = "log(Y) ~ X")+
@@ -1503,10 +1503,11 @@ graf+graf_log
 ## Heterocedasticidade
 
 ```{r, fig.height=4}
-cars_log_com_predicoes <- augment(lm(log(dist) ~ log(speed), data = cars))
+modelo_log <- lm(log(dist) ~ log(speed), data = cars)
+cars_log_com_predicoes <- augment(modelo_log)
 graf <-cars_com_predicoes %>%
   ggplot(aes(x = speed, y = .resid)) +
-  labs(x = "Valores preditos", y = "Resíduos", title = "Alavanca")+
+  labs(x = "Valores preditos", y = "Resíduos", title = "dist ~ speed")+
   geom_point(size = 2) +
   theme_minimal(18) +
   xlim(c(4, 26))
@@ -1514,7 +1515,7 @@ graf <-cars_com_predicoes %>%
 
 graf_log <- cars_log_com_predicoes %>%
   ggplot(aes(x = `log(speed)`, y = `log(dist)` - .fitted)) +
-  labs(x = "Valores preditos", y = "Resíduos", title = "Alavanca")+
+  labs(x = "Valores preditos", y = "Resíduos", title = "log(dist) ~ speed")+
   geom_point(size = 2) +
   theme_minimal(18)
 
@@ -1523,10 +1524,15 @@ graf+graf_log
 ```
 
 
+
 ---
 
 ## Heterocedasticidade
 
+### Problema
+
+- O estimador 
+$\hat{\sigma}_{\beta_1} = \sqrt{\frac{EQM}{\sum(x_i - \bar{x})^2}}$ deixa de ter as melhores propriedades. Poderíamos ter conclusões estranhas para $\beta_1$.
 
 ### Diagnóstico
 
@@ -1534,7 +1540,7 @@ graf+graf_log
 
 ### Tratamentos
 
-- Transformações na variável resposta. log(), etc;
+- Transformações na variável resposta. log(y), sqrt(y), 1/y, etc;
 
 
 ---
