@@ -1159,7 +1159,7 @@ grafico_y_x + grafico_y_x_curvas
 Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
 
 ```{r, echo = TRUE}
-# lembrete: exercício 12 do script!
+# lembrete: exercício 13 do script!
 ```
 
 
@@ -1185,7 +1185,7 @@ grafico_y_x_log + grafico_y_x_curvas
 Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
 
 ```{r, echo = TRUE}
-# lembrete: exercício 12 do script!
+# lembrete: exercício 13 do script!
 ```
 
 
@@ -1270,7 +1270,7 @@ grafico_y_x_poly_curvas
 
 
 ```{r, echo = TRUE}
-# lembrete: exercício 13 do script!
+# lembrete: exercício 14 do script!
 ```
 
 ---
