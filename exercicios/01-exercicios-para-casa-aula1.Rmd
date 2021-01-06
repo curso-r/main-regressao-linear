@@ -34,7 +34,7 @@ help(Boston)
 Faça um gráfico de dispersão entre `medv` e `rm`.
 
 ```{r}
-plot(Boston$rm, Boston$medv)
+
 ```
 
 ## Exercício 2
@@ -42,8 +42,7 @@ plot(Boston$rm, Boston$medv)
 Ajuste um modelo de regressão linear simples utilizando `medv` como resposta e `rm` como explicativa e guarde em objeto chamado `mod_simples`. Consulte o `summary(mod_simples)` em seguida.
 
 ```{r}
-mod_simples <- lm(medv ~ rm, data = Boston)
-summary(mod_simples)
+
 ```
 
 ## Exercício 3
@@ -73,7 +72,7 @@ Consulte as saídas das funções
 
 ## Exercício 5
 
-Usando o data.frame gerado por `augment(mod_simples)` faça o mesmo gráfico feito no exercício 1, mas agora com a reta ajustada do `mod_simples`.
+Usando o data.frame gerado por `augment(mod_simples)` faça um gráfico de `medv` versus `rm` e em seguida desenhe a reta ajustada do `mod_simples`.
 
 ```{r}
 
@@ -81,7 +80,7 @@ Usando o data.frame gerado por `augment(mod_simples)` faça o mesmo gráfico fei
 
 ## Exercício 6
 
-Agora faça um gráfico de resíduos. Coloque os resíduos no eixo Y e os valores ajustados no eixo X.
+Faça um gráfico de resíduos. Coloque os **resíduos** no eixo Y e os **valores ajustados** no eixo X.
 
 ```{r}
 
@@ -96,7 +95,7 @@ Observe os gráficos de `plot(mod_simples)`.
 plot(mod_simples)
 ```
 
-Existem outliers? Eles são pontos de alavanca?
+Apenas pela inspeção visual, responda: existem outliers? Eles são pontos de alavanca?
 
 
 ## Exercício 8
@@ -104,8 +103,7 @@ Existem outliers? Eles são pontos de alavanca?
 Ajuste um modelo `mod_multiplo` para `medv` explicado por `rm` e `crim`. Consulte o `summary(mod_multiplo)` em seguida.
 
 ```{r}
-mod_multiplo <- lm(medv ~ rm + crim, data = Boston)
-summary(mod_multiplo)
+
 ```
 
 
@@ -116,7 +114,7 @@ Qual modelo ficou melhor: `mod_simples` ou `mod_multiplo`? Qual critério você 
 
 ## Exercício 10
 
-Ajuste um modelo `mod_completo` para `medv` explicado por todas as demais colunas. 
+Ajuste um modelo `mod_completo` para `medv` explicado por todas as demais colunas. DICA: na fórmula `medv ~ .`, o ponto significa "todas as variáveis, tirando medv".
 
 a) Consulte o `summary(mod_completo)` em seguida.
 b) Qual modelo ficou melhor: `mod_simples`, `mod_multiplo` ou `mod_completo`?
