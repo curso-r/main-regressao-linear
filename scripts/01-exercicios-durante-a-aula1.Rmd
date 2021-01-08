@@ -43,6 +43,15 @@ ggplot(cars) +
 melhor_reta <- lm(dist ~ speed, data = cars)
 ```
 
+
+```{r}
+# http://www.danieldsjoberg.com/gtsummary/
+library(gtsummary)
+tbl_regression(melhor_reta)
+```
+
+
+
 ## tabela com as predições junto
 
 ```{r}

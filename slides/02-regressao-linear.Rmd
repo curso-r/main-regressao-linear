@@ -61,17 +61,13 @@ theme_set(theme_minimal(12))
 
 ---
 
-## Referência
+## Referências
 
+- [Aprendizagem de Máquinas: Uma Abordagem Estatística (Rafael Izbicki e Thiago Mendonça, 2020)](http://www.rizbicki.ufscar.br/AME.pdf)
 
-<br>
-<center>
-<a href = "http://faculty.marshall.usc.edu/gareth-james/ISL/ISLR%20Seventh%20Printing.pdf">
-<img src="img/isl.jpg" width = 36%> 
-</a>
-</center>
+- [Introduction to Statistical Learning (Hastie, et al)](http://faculty.marshall.usc.edu/gareth-james/ISL/ISLR%20Seventh%20Printing.pdf)
 
-
+- [Ciência de Dados: Fundamentos e Aplicações](https://curso-r.github.io/main-regressao-linear/referencias/Ci%C3%AAncia%20de%20Dados.%20Fundamentos%20e%20Aplica%C3%A7%C3%B5es.%20Vers%C3%A3o%20parcial%20preliminar.%20maio%20Pedro%20A.%20Morettin%20Julio%20M.%20Singer.pdf)
 
 ---
 
@@ -262,6 +258,19 @@ Uma medida de erro: **E**rro **Q**uadrático **M**édio.
 $$
 EQM = \frac{1}{N}\sum(y_i - \hat{y_i})^2
 $$
+
+---
+
+## "Melhor Reta" segundo o quê?
+
+Queremos a reta que **erre menos**.
+
+Uma medida de erro: **E**rro **Q**uadrático **M**édio.
+
+$$
+EQM = \frac{1}{N}\sum(y_i - (\hat{\beta_0} + \hat{\beta_1}x))^2
+$$
+--
 
 ```{r, fig.width=10, fig.height=4, warning=FALSE}
 cars_com_predicoes <- melhor_reta %>% 
