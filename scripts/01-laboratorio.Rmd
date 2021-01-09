@@ -138,9 +138,10 @@ penguins %>%
 ```
 
 ```{r}
-ggplot(penguins, aes(x = species, y = flipper_length_mm)) +
+ggplot(penguins, aes(x = species, y = flipper_length_mm, colour = species)) +
   geom_jitter(alpha = 0.1) +
-  geom_boxplot(fill = NA)
+  geom_boxplot(fill = NA) +
+  theme_minimal()
 ```
 
 
