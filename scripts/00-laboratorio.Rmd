@@ -1,0 +1,21 @@
+---
+title: "Código livre - Regressão Linear"
+author: "Athos Petri Damiani"
+date: "1/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+## Dados: visao.csv
+
+Fonte: [Ciência de Dados, página 149](https://curso-r.github.io/main-regressao-linear/referencias/Ci%C3%AAncia%20de%20Dados.%20Fundamentos%20e%20Aplica%C3%A7%C3%B5es.%20Vers%C3%A3o%20parcial%20preliminar.%20maio%20Pedro%20A.%20Morettin%20Julio%20M.%20Singer.pdf)
+
+```{r}
+
+```
+
