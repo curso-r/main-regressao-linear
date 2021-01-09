@@ -16,6 +16,22 @@ library(tidyverse)
 Fonte: [Ciência de Dados, página 149](https://curso-r.github.io/main-regressao-linear/referencias/Ci%C3%AAncia%20de%20Dados.%20Fundamentos%20e%20Aplica%C3%A7%C3%B5es.%20Vers%C3%A3o%20parcial%20preliminar.%20maio%20Pedro%20A.%20Morettin%20Julio%20M.%20Singer.pdf)
 
 ```{r}
+visao <- readr::read_csv2("https://raw.githubusercontent.com/curso-r/main-regressao-linear/master/misc/visao.csv")
+glimpse(visao)
+```
 
+```{r}
+# reta na mão!
+minha_reta <- function(x) 70 + 2 * x
+```
+```{r}
+ggplot(visao, aes(x  = idade, y = distancia)) +
+  geom_point() + 
+  # geom_smooth(method = "lm", se = FALSE) +
+  # geom_function(fun = minha_reta, colour = "red") +
+  coord_fixed(ratio = 0.2, xlim = c(15, 90), ylim = c(80,240))
+```
+```{r}
+lm()
 ```
 
