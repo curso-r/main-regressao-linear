@@ -30,8 +30,8 @@ minha_reta <- function(x) 70 + 2 * x
 ```{r}
 ggplot(visao, aes(x  = idade, y = distancia)) +
   geom_point() + 
-  # geom_smooth(method = "lm", se = FALSE) +
-  # geom_function(fun = minha_reta, colour = "red") +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_function(fun = minha_reta, colour = "red") +
   coord_fixed(ratio = 0.2, xlim = c(15, 90), ylim = c(80, 240))
 ```
 

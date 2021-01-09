@@ -69,6 +69,40 @@ theme_set(theme_minimal(12))
 
 - [Ciência de Dados: Fundamentos e Aplicações](https://curso-r.github.io/main-regressao-linear/referencias/Ci%C3%AAncia%20de%20Dados.%20Fundamentos%20e%20Aplica%C3%A7%C3%B5es.%20Vers%C3%A3o%20parcial%20preliminar.%20maio%20Pedro%20A.%20Morettin%20Julio%20M.%20Singer.pdf)
 
+
+
+---
+
+# Usos da Regressão Linear ("duas culturas")
+
+* Predição
+* Inferência
+
+## Predição
+
+Em muitas situações X está disponível facilmente mas, Y não é fácil de descobrir. (Ou mesmo não é possível descobrí-lo).
+
+$$\hat{Y} = \hat{f}(X)$$
+é uma boa estimativa.
+Neste caso não estamos interessados em como é a estrutura $\hat{f}$ desde que ela apresente predições boas para $Y$.
+
+---
+
+# Usos da Regressão Linear ("duas culturas")
+
+* Predição
+* Inferência
+
+## Inferência
+
+Em inferência estamos mais interessados em entender a relação entre as variáveis explciativas $X$ e a variável resposta $Y$.
+
+Por exemplo:
+
+* Quais são as variáveis que estão mais relacionadas com a respostas?
+* Qual a relação entre a resposta e cada um dos preditores?
+
+
 ---
 
 ## O que é e quando usar
