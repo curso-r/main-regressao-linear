@@ -114,8 +114,6 @@ knitr::include_graphics("img/01-introducao-ao-curso/linha_do_tempo.png", dpi = 1
 - A gravação das aulas ficará disponível no Google Classroom por 1 ano após o final do curso.
 
 - Teremos 3 aulas aos sábados, de duração de 3 horas e com intervalos de 10 minutos.
-- Teremos 3 aulas aos sábados, de duração de 3 horas e com intervalos de 10 minutos.
-- Teremos 3 aulas aos sábados, de duração de 3 horas e com intervalos de 10 minutos.
 
 
 ---
