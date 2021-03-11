@@ -12,24 +12,9 @@ abaixo**.
 
 | Turma           | Material                                            | Github                                               |
 | :-------------- | :-------------------------------------------------- | :--------------------------------------------------- |
-| janeiro de 2021 | <https://curso-r.github.io/202101-regressao-linear> | <https://github.com/curso-r/202101-regressao-linear> |
-| agosto de 2020  | <https://curso-r.github.io/202008-regressao-linear> | <https://github.com/curso-r/202008-regressao-linear> |
-| março de 2020   | <https://curso-r.github.io/202003-regressao-linear> | <https://github.com/curso-r/202003-regressao-linear> |
+| Março de 2021   | <https://curso-r.github.io/202103-regressao-linear> | <https://github.com/curso-r/202103-regressao-linear> |
+| Janeiro de 2021 | <https://curso-r.github.io/202101-regressao-linear> | <https://github.com/curso-r/202101-regressao-linear> |
+| Agosto de 2020  | <https://curso-r.github.io/202008-regressao-linear> | <https://github.com/curso-r/202008-regressao-linear> |
 
-# Ementa
-
-  - **Introdução**
-      - O que é e quando usar regressão linear
-      - O que são parâmetros e como interpretá-los
-  - **Ajuste**
-      - Implementação de modelos de regressão linear no R
-      - Transformações nas variáveis
-      - Interações de variáveis
-  - **Testando hipóteses**
-      - Construindo intervalos de confiança
-      - Construindo testes de hipóteses
-      - O valor p
-  - **Diagnóstico**
-      - Avaliando as suposições do modelo
-      - Avaliando *outliers*
-      - Avaliando a qualidade do ajuste
+**Atenção**: o material de cursos que ainda não começaram pode não
+existir ainda.

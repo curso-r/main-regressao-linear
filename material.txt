@@ -1,1 +1,4 @@
 scripts
+exercicios
+misc
+referencias

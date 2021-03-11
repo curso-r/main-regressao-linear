@@ -19,25 +19,8 @@ Inscreva-se no curso: https://www.curso-r.com/cursos/regressao-linear/
 
 **Acesse o material completo do curso escolhendo uma das turmas abaixo**.
 
-```{r, echo = FALSE}
-knitr::kable(CursoR:::listar_turmas_recentes("regressao-linear"))
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+knitr::kable(CursoRutils:::listar_turmas_recentes("regressao-linear"))
 ```
 
-# Ementa
-
-- **Introdução**
-  - O que é e quando usar regressão linear
-  - O que são parâmetros e como interpretá-los
-- **Ajuste**
-  - Implementação de modelos de regressão linear no R
-  - Transformações nas variáveis
-  - Interações de variáveis
-- **Testando hipóteses**
-  - Construindo intervalos de confiança
-  - Construindo testes de hipóteses
-  - O valor p
-- **Diagnóstico**
-  - Avaliando as suposições do modelo
-  - Avaliando *outliers*
-  - Avaliando a qualidade do ajuste
-
+**Atenção**: o material de cursos que ainda não começaram pode não existir ainda.
