@@ -27,6 +27,9 @@ library(tidyverse)
 theme_set(theme_minimal(12))
 ```
 
+```{r xaringan-scribble, echo=FALSE}
+xaringanExtra::use_scribble()
+```
 
 ## Agenda
 
