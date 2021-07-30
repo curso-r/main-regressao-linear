@@ -2,7 +2,6 @@ library(purrr)
 library(broom)
 library(tidyverse)
 library(gganimate)
-library(caret)
 set.seed(1)
 theme_set(theme_minimal(20))
 
@@ -18,7 +17,7 @@ criar_amostra <- function(n) {
 df_treino <- criar_amostra(10)
 df_teste <- criar_amostra(10)
 
-ggplot(df, aes(x = x, y = y)) +
+ggplot(df_treino, aes(x = x, y = y)) +
   geom_point()
 
 
@@ -43,16 +42,17 @@ gif <- polinomios %>%
   ggplot(aes(x = x, y = y)) +
   geom_line(show.legend = FALSE, colour = "purple", size = 1) +
   geom_point(aes( colour = "TREINO"), data = df_treino, size = 4) +
-  # geom_point(aes( colour = "TESTE"), data = df_teste, size = 3) +
-  # scale_colour_manual(values = c("TREINO" = "purple", "TESTE" = "salmon")) +
+  geom_point(aes( colour = "TESTE"), data = df_teste, size = 3) +
+  scale_colour_manual(values = c("TREINO" = "#00BFC4", "TESTE" = "salmon")) +
+  # scale_colour_manual(values = c("TREINO" = "#00BFC4")) +
   coord_cartesian(ylim = (c(-200,1300))) +
-  scale_colour_manual(values = c("TREINO" = "#00BFC4")) +
   labs(colour = "") +
   labs(title = 'Grau do polinômio: {closest_state}') +
   transition_states(grau,
                     transition_length = 2,
                     state_length = 2,
-                    wrap = TRUE)
+                    wrap = TRUE) +
+  ease_aes("sine-in-out")
 animate(gif, height = 400, width =650)
 gganimate::save_animation(gganimate::last_animation(), file = "slides/img/overfiting_sem_teste.gif")
 
@@ -113,6 +113,13 @@ gif_eqm <- eqm_grafico %>%
   shadow_trail(distance = 0.008, size = 1)
 animate(gif_eqm, height = 400, width =400)
 gganimate::save_animation(gganimate::last_animation(), file = "slides/img/gif_eqm.gif")
+
+
+
+
+
+
+
 
 library(magick)
 

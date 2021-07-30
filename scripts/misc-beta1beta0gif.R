@@ -13,7 +13,6 @@ cars_bs <- cars %>%
   mutate(
     lm = map(strap, ~lm(dist ~ speed, data = .)),
     coeficientes = map(lm, tidy)
-    # predicoes = map(lm, augment)
   ) %>%
   unnest(coeficientes) %>%
   mutate(
@@ -24,7 +23,7 @@ retas <- cars_bs %>%
   select(frame, term, estimate) %>%
   spread(term, estimate) %>% 
   ggplot() +
-  geom_point(aes(x = speed, y = dist), alpha = 0.5, data = cars) +
+  geom_point(data = cars, aes(x = speed, y = dist), alpha = 0.5) +
   geom_abline(aes(intercept = `(Intercept)`, slope = speed, group = frame), alpha = 0.2, colour = "salmon") +
   transition_states(frame, 1, 1) + 
   ggtitle("# retas = {frame}") +

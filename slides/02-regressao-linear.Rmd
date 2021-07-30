@@ -28,7 +28,7 @@ theme_set(theme_minimal(12))
 ```
 
 ```{r xaringan-scribble, echo=FALSE}
-xaringanExtra::use_scribble()
+# xaringanExtra::use_scribble()
 ```
 
 ## Agenda
@@ -1583,10 +1583,12 @@ $\hat{\sigma}_{\beta_1} = \sqrt{\frac{EQM}{\sum(x_i - \bar{x})^2}}$ deixa de ter
 ### Diagnóstico
 
 - Visualização dos resíduos;
+- Testes formais (Breuch-Pagan, White, etc)
 
 ### Tratamentos
 
 - Transformações na variável resposta. log(y), sqrt(y), 1/y, etc;
+- Mínimos Quadrados Ponderados/Generalizados
 
 
 ---
