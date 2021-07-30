@@ -29,6 +29,7 @@ DT::datatable(visao)
 # reta na mão: chutar uma reta
 minha_reta <- function(x) 195 + -1 * x
 ```
+
 ```{r}
 ggplot(visao, aes(x  = idade, y = distancia)) +
   geom_point() + 
