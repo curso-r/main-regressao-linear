@@ -6,6 +6,7 @@
     <meta name="author" content="" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="css/xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="css/custom-intro.css" type="text/css" />
   </head>
   <body>
     <textarea id="source">
@@ -14,92 +15,97 @@ class: center, middle, inverse, title-slide
 # Regressão Linear com R
 ## Introdução ao curso
 ### <img src = 'https://d33wubrfki0l68.cloudfront.net/9b0699f18268059bdd2e5c21538a29eade7cbd2b/67e5c/img/logo/cursor1-5.png' width = '30%'>
-### março de 2021
+### julho de 2021
 
 ---
 
 
 
 
-class: middle, center, inverse
+class: middle, center
+
 # Sobre a Curso-R
 
 ---
-## Curso-R
 
-&lt;img src="img/01-introducao-ao-curso/professores.png" width="812" style="display: block; margin: auto;" /&gt;
+## A empresa
 
----
-## Linha do tempo
+.pull-left[
+![](https://d33wubrfki0l68.cloudfront.net/295643c6243701ae6a9bac3fb8ad467ff0ce3c84/d1785/img/logo/cursor1-41.png)&lt;!-- --&gt;
 
-&lt;img src="img/01-introducao-ao-curso/linha_do_tempo.png" width="406" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+### [www.curso-r.com](https://www.curso-r.com)
+
+Nasceu em 2013 como um curso de R no programa de verão do IME-USP
+
+Expansão para fora da universidade em 2015
+
+Abertura de consultorias e cursos especializados em 2017
+
+
+]
+
+
 
 ---
 ## Nossos cursos
 
-&lt;div&gt;
-  &lt;div class="pull-left"&gt;
-    &lt;div class="container center"&gt;
-      &lt;div class="card"&gt;
-        &lt;h4&gt;Programação em R&lt;/h4&gt;
-        &lt;hr style="background-color:#3bb44a;"/&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/r4ds-1/"&gt;R para Ciência de Dados I&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/r4ds-2/"&gt;R para Ciência de Dados II&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/rcpp/"&gt;Introdução ao R com C++&lt;/a&gt;
-        &lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;br/&gt;
-    &lt;div class="container center"&gt;
-      &lt;div class="card"&gt;
-        &lt;h4&gt;Modelagem&lt;/h4&gt;
-        &lt;hr style="background-color:#996699;"/&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/regressao-linear/"&gt;Regressão linear&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/intro-machine-learning/"&gt;Machine Learning&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/xgboost/"&gt;XGBoost&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/deep-learning/"&gt;Deep Learning&lt;/a&gt;
-        &lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;div class="pull-right"&gt;
-    &lt;div class="container center"&gt;
-      &lt;div class="card"&gt;
-        &lt;h4&gt;Extração de dados&lt;/h4&gt;
-        &lt;hr style="background-color:#eeba30;"/&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/web-scraping/"&gt;Web scraping&lt;/a&gt;
-        &lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;br/&gt;
-    &lt;br/&gt;
-    &lt;div class="container center"&gt;
-      &lt;div class="card"&gt;
-        &lt;h4&gt;Comunicação e automação&lt;/h4&gt;
-        &lt;hr style="background-color:#ff6699;"/&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/dashboards/"&gt;Dashboards&lt;/a&gt;
-        &lt;/p&gt;
-        &lt;p style='font-size:16px'&gt;
-          &lt;a href="https://www.curso-r.com/cursos/deploy/"&gt;Deploy&lt;/a&gt;
-        &lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+
+.pull-left[
+&lt;div class="container center"&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;Programação em R&lt;/h2&gt;
+    &lt;hr style = "background-color: #3bb44a;"/&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/intro-programacao/"&gt;Introdução à programação com R&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/r4ds-1/"&gt;R para Ciência de dados I&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/r4ds-2/"&gt;R para Ciência de dados II&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/pacotes/"&gt;Pacotes&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/rcpp/"&gt;Introdução ao R com C++&lt;/a&gt;&lt;/p&gt;
+
   &lt;/div&gt;
 &lt;/div&gt;
+
+&lt;br&gt;
+
+&lt;div class="container center"&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;Extração de dados&lt;/h2&gt;
+    &lt;hr style = "background-color: #eeba30;"/&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/faxina/"&gt;Faxina de dados&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/web-scraping/"&gt;Web scraping&lt;/a&gt;&lt;/p&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+]
+
+
+.pull-right[
+&lt;div class="container center"&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;Modelagem&lt;/h2&gt;
+    &lt;hr style = "background-color: #996699;"/&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/regressao-linear/"&gt;Regressão Linear&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/intro-machine-learning/"&gt;Machine Learning&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/xgboost/"&gt;XGBoost&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/deep-learning/"&gt;Deep Learning&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;br&gt;
+
+&lt;div class="container center"&gt;
+  &lt;div class="card"&gt;
+    &lt;h2&gt;Comunicação e automação&lt;/h2&gt;
+    &lt;hr style = "background-color: #ff6699;"/&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/dashboards/"&gt;Relatórios e visualização de dados&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/dashboards/"&gt;Dashboards com R&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;a href = "https://www.curso-r.com/cursos/deploy/"&gt;Deploy&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+]
 
 ---
 ## Dinâmica curso

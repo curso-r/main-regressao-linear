@@ -3,6 +3,8 @@ title: "Código livre - Regressão Linear"
 author: "Athos Petri Damiani"
 date: "1/8/2021"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -25,7 +27,7 @@ DT::datatable(visao)
 
 ```{r}
 # reta na mão: chutar uma reta
-minha_reta <- function(x) 70 + 2 * x
+minha_reta <- function(x) 195 + -1 * x
 ```
 ```{r}
 ggplot(visao, aes(x  = idade, y = distancia)) +
@@ -151,6 +153,106 @@ summary(modelo_para_nadadeiras)
 ```
 ```{r}
 tbl_regression(modelo_para_nadadeiras)
+```
+
+
+
+
+## multicolinearidade
+
+```{r}
+library(tidyverse)
+set.seed(1)
+basquete <- tibble(
+  peso = runif(9, 45, 100),
+  altura = 1.00 + 0.01*peso + rnorm(9, sd = 0.01),
+  tocos = floor(altura*30 - 45 + rnorm(9))
+)
+basquete
+GGally::ggpairs(basquete)
+```
+
+```{r}
+m <- lm(tocos  ~ peso + altura, data = basquete)
+m <- lm(tocos  ~  altura, data = basquete)
+summary(m)
+```
+
+```{r}
+model.matrix(Sepal.Width ~ Sepal.Length*Species, data = iris[100:106, ])
+
+iris[100:106, c("Sepal.Width", "Sepal.Length", "Species")]
+```
+
+```{r}
+
+predict(m)
+
+basquete_com_predicoes <- basquete %>%
+  mutate(
+    tocos_preditos = floor(predict(m))
+  )
+```
+
+```{r}
+basquete_abr2021 <- data.frame(
+  altura = c(1.80, 1.45, 2.2),
+  signo = c("libra", "leao", "sagitario")
+)
+
+
+m <- lm(pop ~ uf + ano, data = bd_treino)
+
+bd <- data.frame(
+  uf = c("SP", "SP", "MG", "MG"),
+  ano = c(2022, 2023, 2022, 2023)
+)
+predict(m, newdata = bd)
+
+
+
+
+
+
+basquete_abr2021$preds <- predict(m, newdata = bd)
+
+basquete_abr2021
+```
+
+
+
+```{r}
+library(broom)
+augment(m, newdata = basquete_abr2021, interval = "confidence")
+```
+
+```{r}
+
+
+
+normal <-  lm(pop ~ uf + ano, data = bd_treino) # LOSS: EQM (y - yh)^2
+gama   <- glm(pop ~ uf + ano, data = bd_treino, family = "Gamma") # LOSS: log(y)  
+
+```
+
+
+```{r}
+bd <- data.frame(
+  uf = c("SP", "SP", "RJ", "RJ", "RJ"),
+  cidade = c("sao paulo", "sao paulo", "niteroi", "niteroi", "niteroi")
+)
+
+
+bd
+
+# tabela cruzada entre as variaveis categóricas
+
+table(bd$uf, bd$cidade)
+chisq.test(table(bd$uf, bd$cidade))
+```
+
+```{r}
+altura <- readline("Informe a altura do jogador")
 ```
 
 

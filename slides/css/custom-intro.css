@@ -17,9 +17,6 @@
   padding-left: 100px;
 }
 
-body{
-font-family: 'Futura Serif', Palatino, serif;
-}
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -150,6 +147,7 @@ a, a > code {
   background: #f0f0f0;
 }
 
+
 .huge .remark-code { /*Change made here*/
   font-size: 200% !important;
 }
@@ -158,12 +156,9 @@ a, a > code {
   font-size: 70% !important;
 }
 
-.remark-slide-content code {
-    font-size: 15px;
-}
 
-.remark-slide>.titulo {
-  color: #6495ed;
-  vertical-align: middle;
-  text-align: center;
+
+.blue{
+  color:#6495ed; 
+  font-weight: bold;
 }
