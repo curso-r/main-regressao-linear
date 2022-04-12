@@ -104,7 +104,9 @@ matriz_estrategia <- credit_com_predicoes %>%
   na.omit() %>%
   group_by(Idade_categorizada, Renda_categorizada) %>%
   summarise(saldo_predito = mean(.fitted)) %>%
-  mutate(decisao = ifelse(saldo_predito > 600, 400, 800)) %>%
+  mutate(decisao = case_when(saldo_predito > 600 ~ 1000, 
+                             saldo_predito > 400 ~ 500,
+                             TRUE ~ 000)) %>%
   ggplot(aes(x = Renda_categorizada, y = Idade_categorizada)) +
   scale_fill_gradient2(low = "darkred", mid = "#ddddaa", high = "midnightblue", midpoint = 600)
 
@@ -119,9 +121,26 @@ matriz_de_decisao_grafico / matriz_estrategia_sem_decisao /matriz_estrategia_com
 
 ```{r}
 # tabela analítica
-credit_com_predicoes %>% select(Renda = Income, Idade = Age, 
-                                Saldo = Balance, predicao = .fitted) %>%
+credit_com_predicoes %>% 
+  select(
+    Renda = Income, 
+    Idade = Age, 
+    Saldo = Balance, 
+    predicao = .fitted
+  ) %>%
   arrange(desc(predicao))
+```
+
+```{r}
+expand.grid(
+  Income = 20:200,
+  Age = 20:100
+) %>%
+  mutate(
+    predicao = predict(estimador_de_saldo, .)
+  ) %>%
+  ggplot(aes(Age, Income)) +
+  geom_jitter(aes(colour = decisao))
 ```
 
 ## Exemplo 3: Pinguins (ANOVA)
@@ -152,109 +171,36 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm, colour = species)) +
 modelo_para_nadadeiras <- lm(flipper_length_mm ~ species, data = penguins)
 summary(modelo_para_nadadeiras)
 ```
+
 ```{r}
 tbl_regression(modelo_para_nadadeiras)
 ```
 
 
-
-
-## multicolinearidade
+## Visao
 
 ```{r}
 library(tidyverse)
-set.seed(1)
-basquete <- tibble(
-  peso = runif(9, 45, 100),
-  altura = 1.00 + 0.01*peso + rnorm(9, sd = 0.01),
-  tocos = floor(altura*30 - 45 + rnorm(9))
-)
-basquete
-GGally::ggpairs(basquete)
-```
-
-```{r}
-m <- lm(tocos  ~ peso + altura, data = basquete)
-m <- lm(tocos  ~  altura, data = basquete)
-summary(m)
-```
-
-```{r}
-model.matrix(Sepal.Width ~ Sepal.Length*Species, data = iris[100:106, ])
-
-iris[100:106, c("Sepal.Width", "Sepal.Length", "Species")]
-```
-
-```{r}
-
-predict(m)
-
-basquete_com_predicoes <- basquete %>%
-  mutate(
-    tocos_preditos = floor(predict(m))
-  )
-```
-
-```{r}
-basquete_abr2021 <- data.frame(
-  altura = c(1.80, 1.45, 2.2),
-  signo = c("libra", "leao", "sagitario")
-)
-
-
-m <- lm(pop ~ uf + ano, data = bd_treino)
-
-bd <- data.frame(
-  uf = c("SP", "SP", "MG", "MG"),
-  ano = c(2022, 2023, 2022, 2023)
-)
-predict(m, newdata = bd)
-
-
-
-
-
-
-basquete_abr2021$preds <- predict(m, newdata = bd)
-
-basquete_abr2021
-```
-
-
-
-```{r}
 library(broom)
-augment(m, newdata = basquete_abr2021, interval = "confidence")
+visao <- read_csv2("https://raw.githubusercontent.com/curso-r/main-regressao-linear/master/misc/visao.csv")
+
+ggplot(visao) + geom_point(aes(idade, distancia))
+
+# regressao
+modelo <- lm(distancia ~ idade, data = visao)
+
+# sumários
+summary(modelo)
+glance(modelo)
+
+# gráficos
+plot(modelo)
+
+# predicoes
+predict(modelo)
+augment(modelo)
 ```
 
-```{r}
-
-
-
-normal <-  lm(pop ~ uf + ano, data = bd_treino) # LOSS: EQM (y - yh)^2
-gama   <- glm(pop ~ uf + ano, data = bd_treino, family = "Gamma") # LOSS: log(y)  
-
-```
-
-
-```{r}
-bd <- data.frame(
-  uf = c("SP", "SP", "RJ", "RJ", "RJ"),
-  cidade = c("sao paulo", "sao paulo", "niteroi", "niteroi", "niteroi")
-)
-
-
-bd
-
-# tabela cruzada entre as variaveis categóricas
-
-table(bd$uf, bd$cidade)
-chisq.test(table(bd$uf, bd$cidade))
-```
-
-```{r}
-altura <- readline("Informe a altura do jogador")
-```
 
 
 
