@@ -1687,20 +1687,22 @@ summary(modelo_boston)
 Saldo médio no cartão de crédito é diferente entre homens e mulheres?
 
 ```{r, fig.height=1.5}
-Credit %>%
-  ggplot(aes(x = Gender, y = Balance, fill = Gender)) +
+library(palmerpenguins)
+penguins %>%
+  na.omit() %>%
+  ggplot(aes(x = sex, y = flipper_length_mm, fill = sex)) +
   geom_boxplot(show.legend = FALSE) +
   coord_flip() +
-  labs(y = "Saldo médio no cartão de crédito (USD)", x = "")
+  labs(y = "Tamanho das nadadeiras (mm)", x = "")
 ```
 
 
 ```{r, echo = TRUE, eval = FALSE}
-summary(lm(Balance ~ Gender, data = Credit))
+summary(lm(flipper_length_mm ~ sex, data = penguins))
 # Coefficients:
-#              Estimate  Std.Error  t value Pr(>|t|)    
-# (Intercept)    509.80  33.13      15.389   <2e-16 ***
-# GenderFemale    19.73  46.05       0.429    0.669   
+#             Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)  197.364      1.057 186.792  < 2e-16 ***
+# sexmale        7.142      1.488   4.801 2.39e-06 ***
 ```
 
 
