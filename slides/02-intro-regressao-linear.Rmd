@@ -1712,20 +1712,22 @@ summary(lm(Balance ~ Gender, data = Credit))
 
 ### Preditor com apenas 2 categorias
 
-Saldo médio no cartão de crédito é diferente entre homens e mulheres?
+Tamanho das nadadeiras de pinguins são diferentes entre os sexos?
 
 ```{r, fig.height=1.5}
-Credit %>%
-  ggplot(aes(x = Gender, y = Balance, fill = Gender)) +
+library(palmerpenguins)
+penguins %>%
+  na.omit() %>%
+  ggplot(aes(x = sex, y = flipper_length_mm, fill = sex)) +
   geom_boxplot(show.legend = FALSE) +
   coord_flip() +
-  labs(y = "Saldo médio no cartão de crédito (USD)", x = "")
+  labs(y = "Tamanho das nadadeiras (mm)", x = "")
 ```
 
 
 $$
-y_i = \beta_0 + \beta_1x_i \space\space\space\space\space\space \text{em que}\space\space\space\space\space\space x_i = \Bigg\\{\begin{array}{ll}1&\text{se a i-ésima pessoa for }\texttt{female}\\\\
-0&\text{se a i-ésima pessoa for } \texttt{male}\end{array}
+y_i = \beta_0 + \beta_1x_i \space\space\space\space\space\space \text{em que}\space\space\space\space\space\space x_i = \Bigg\\{\begin{array}{ll}1&\text{se a i-ésimo animal for }\texttt{female}\\\\
+0&\text{se a i-ésimo animal for } \texttt{male}\end{array}
 $$
 
 .letrinha[
@@ -1747,21 +1749,21 @@ Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Lear
 .pull-left-letrinha[
 
 ```{r, fig.height=3}
-Credit %>%
-  ggplot(aes(x = Ethnicity, y = Balance, fill = Ethnicity)) +
+palmerpenguins::penguins %>%
+  ggplot(aes(x = species, y = flipper_length_mm, fill = species)) +
   geom_boxplot(show.legend = FALSE) +
   coord_flip() +
-  labs(y = "Saldo (USD)", x = "") +
+  labs(y = "Tamanho das nadadeiras (mm)", x = "") +
   theme_minimal(22)
 ```
 
 
 ```{r, echo=TRUE, eval=FALSE}
-summary(lm(Balance ~ Ethnicity, data = Credit))
-#                    Estimate  Std.Error t value Pr(>|t|)    
-# (Intercept)          531.00  46.32     11.464   <2e-16 ***
-# EthnicityAsian       -18.69  65.02     -0.287    0.774    
-# EthnicityCaucasian   -12.50  56.68     -0.221    0.826  
+summary(lm(flipper_length_mm ~ species, data = penguins))
+#                  Estimate Std. Error t value Pr(>|t|)    
+# (Intercept)      189.9536     0.5405 351.454  < 2e-16 ***
+# speciesChinstrap   5.8699     0.9699   6.052 3.79e-09 ***
+# speciesGentoo     27.2333     0.8067  33.760  < 2e-16 ***
 ```
 
 
@@ -1776,9 +1778,9 @@ $$y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i}$$
 Em que
 
 
-$x_{1i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Asian}\\0&\text{caso contrário}\end{array}$
+$x_{1i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Chinstrap}\\0&\text{caso contrário}\end{array}$
 
-$x_{2i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Caucasian}\\0&\text{caso contrário}\end{array}$
+$x_{2i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Gentoo}\\0&\text{caso contrário}\end{array}$
 
 ]
 
@@ -1792,8 +1794,9 @@ $x_{2i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Caucasian}\\0&\te
 "One hot enconding" ou "Dummies" ou "Indicadores".
 
 ```{r}
-Credit %>% slice(1:8) %>% select(Ethnicity) %>%
-  cbind(model.matrix(~Ethnicity, data = .)) %>%
+set.seed(42)
+penguins %>% sample_n(8) %>% select(species) %>%
+  cbind(model.matrix(~species, data = .)) %>%
   knitr::kable(format = "html")
 ```
 
@@ -1805,7 +1808,7 @@ Credit %>% slice(1:8) %>% select(Ethnicity) %>%
 
 Interpretação dos parâmetros:
 
-$y_{i} = \left\{ \begin{array}{ll} \beta_0 & \text{se for }\texttt{Afro American}\\ \beta_0 + \beta_1&\text{se for } \texttt{Asian}\\ \beta_0 + \beta_2&\text{se for } \texttt{Caucasian}\end{array}\right.$
+$y_{i} = \left\{ \begin{array}{ll} \beta_0 & \text{se for }\texttt{Adelie}\\ \beta_0 + \beta_1&\text{se for } \texttt{Chinstrap}\\ \beta_0 + \beta_2&\text{se for } \texttt{Gentoo}\end{array}\right.$
 
 ```{r, echo = TRUE}
 # interprete cada um dos três parâmetros individualmente.
