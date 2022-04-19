@@ -1642,9 +1642,6 @@ fig <- plot_ly(data = mtcars) %>%
 fig
 ```
 
-.footnote[
-Fonte: [sthda.com](http://www.sthda.com/english/wiki/impressive-package-for-3d-and-4d-graph-r-software-and-data-visualization)
-]
 
 ]
 
@@ -1678,9 +1675,660 @@ summary(modelo_boston)
 # age          0.03    0.01       2.8    0.00491 ** 
 ```
 
-.footnote[
-Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 71 (Multiple Linear Regression).
+
+
+
+---
+
+## Preditores Categóricos
+
+### Preditor com apenas 2 categorias
+
+Saldo médio no cartão de crédito é diferente entre homens e mulheres?
+
+```{r, fig.height=1.5}
+Credit %>%
+  ggplot(aes(x = Gender, y = Balance, fill = Gender)) +
+  geom_boxplot(show.legend = FALSE) +
+  coord_flip() +
+  labs(y = "Saldo médio no cartão de crédito (USD)", x = "")
+```
+
+
+```{r, echo = TRUE, eval = FALSE}
+summary(lm(Balance ~ Gender, data = Credit))
+# Coefficients:
+#              Estimate  Std.Error  t value Pr(>|t|)    
+# (Intercept)    509.80  33.13      15.389   <2e-16 ***
+# GenderFemale    19.73  46.05       0.429    0.669   
+```
+
+
+
+
+---
+
+## Preditores Categóricos
+
+### Preditor com apenas 2 categorias
+
+Saldo médio no cartão de crédito é diferente entre homens e mulheres?
+
+```{r, fig.height=1.5}
+Credit %>%
+  ggplot(aes(x = Gender, y = Balance, fill = Gender)) +
+  geom_boxplot(show.legend = FALSE) +
+  coord_flip() +
+  labs(y = "Saldo médio no cartão de crédito (USD)", x = "")
+```
+
+
+$$
+y_i = \beta_0 + \beta_1x_i \space\space\space\space\space\space \text{em que}\space\space\space\space\space\space x_i = \Bigg\\{\begin{array}{ll}1&\text{se a i-ésima pessoa for }\texttt{female}\\\\
+0&\text{se a i-ésima pessoa for } \texttt{male}\end{array}
+$$
+
+.letrinha[
+
+```{r, echo = TRUE}
+# lembrete: exercícios 8, 9 e 10 do script!
+```
+
+Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 84 (Predictors with Only Two Levels).
 ]
+
+
+---
+
+## Preditores Categóricos
+
+### Preditor com 3 ou mais categorias
+
+.pull-left-letrinha[
+
+```{r, fig.height=3}
+Credit %>%
+  ggplot(aes(x = Ethnicity, y = Balance, fill = Ethnicity)) +
+  geom_boxplot(show.legend = FALSE) +
+  coord_flip() +
+  labs(y = "Saldo (USD)", x = "") +
+  theme_minimal(22)
+```
+
+
+```{r, echo=TRUE, eval=FALSE}
+summary(lm(Balance ~ Ethnicity, data = Credit))
+#                    Estimate  Std.Error t value Pr(>|t|)    
+# (Intercept)          531.00  46.32     11.464   <2e-16 ***
+# EthnicityAsian       -18.69  65.02     -0.287    0.774    
+# EthnicityCaucasian   -12.50  56.68     -0.221    0.826  
+```
+
+
+]
+
+.pull-right[
+
+Modelo
+
+$$y_i = \beta_0 + \beta_1x_{1i} + \beta_2x_{2i}$$
+
+Em que
+
+
+$x_{1i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Asian}\\0&\text{caso contrário}\end{array}$
+
+$x_{2i} = \Bigg \{ \begin{array}{ll} 1 & \text{se for }\texttt{Caucasian}\\0&\text{caso contrário}\end{array}$
+
+]
+
+
+---
+
+## Preditores Categóricos
+
+### Preditor com 3 ou mais categorias
+
+"One hot enconding" ou "Dummies" ou "Indicadores".
+
+```{r}
+Credit %>% slice(1:8) %>% select(Ethnicity) %>%
+  cbind(model.matrix(~Ethnicity, data = .)) %>%
+  knitr::kable(format = "html")
+```
+
+---
+
+## Preditores Categóricos
+
+### Preditor com 3 ou mais categorias
+
+Interpretação dos parâmetros:
+
+$y_{i} = \left\{ \begin{array}{ll} \beta_0 & \text{se for }\texttt{Afro American}\\ \beta_0 + \beta_1&\text{se for } \texttt{Asian}\\ \beta_0 + \beta_2&\text{se for } \texttt{Caucasian}\end{array}\right.$
+
+```{r, echo = TRUE}
+# interprete cada um dos três parâmetros individualmente.
+# lembrete: exercício 11 do script!
+```
+
+
+---
+
+## Transformações Não Lineares dos Preditores
+
+### Exemplo: log
+
+.pull-left[
+Modelo real: $y = 10 + 0.5log(x)$ 
+]
+
+.pull-right[
+Modelo proposto: $\small y = \beta_0 + \beta_1log(x)$ 
+]
+```{r}
+set.seed(1)
+y_x <- tibble(
+  x = runif(60),
+  y = 10 + 0.5*log(x) + rnorm(30, sd = 0.1)
+) 
+
+grafico_y_x <- y_x %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_point( size = 3) 
+
+
+grafico_y_x_curvas <- grafico_y_x +
+  geom_smooth(aes(colour = "y ~ x"), method = "lm", se = FALSE, formula = y ~ x) +
+  geom_smooth(aes(colour = "y ~ log(x)"), method = "lm", se = FALSE, formula = y ~ log(x)) +
+  labs(colour = "Modelo") +
+  theme(legend.position = "right") 
+
+grafico_y_x_log <- grafico_y_x + scale_x_log10() + labs(x = "x (escala logarítmica)")
+```
+
+```{r, fig.width=9, fig.height=3, fig.align="center"}
+grafico_y_x + grafico_y_x_curvas
+```
+
+Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
+
+.letrinha[
+```{r, echo = TRUE}
+# lembrete: exercício 13 do script!
+```
+]
+
+
+---
+
+## Transformações Não Lineares dos Preditores
+
+### Exemplo: log
+
+
+.pull-left[
+Modelo real: $y = 10 + 0.5log(x)$ 
+]
+
+.pull-right[
+Modelo proposto: $\small y = \beta_0 + \beta_1log(x)$ 
+]
+
+```{r, fig.width=9, fig.height=3, fig.align="center"}
+grafico_y_x_log + grafico_y_x_curvas 
+```
+
+Outras transformações comuns: raíz quadrada, polinômios, Box-Cox, ...
+
+```{r, echo = TRUE}
+# lembrete: exercício 13 do script!
+```
+
+
+---
+
+## Transformações Não Lineares dos Preditores
+
+### Gráfico de Resíduos
+
+```{r,  message = FALSE, warning=FALSE, fig.width=10, fig.height=5, fig.align="center"}
+mod_sem_log <- lm(y ~ x, data = y_x)
+mod_com_log <- lm(y ~ log(x), data = y_x)
+
+y_x_com_preds <- y_x %>%
+  mutate(
+    pred_sem_log = predict(mod_sem_log, .),
+    pred_com_log = predict(mod_com_log, .)
+  )
+
+grafico_de_residuos <- y_x_com_preds %>%
+  pivot_longer(starts_with("pred"), names_to = "modelo", values_to = "pred") %>%
+  mutate(
+    residuo = y - pred
+  ) %>%
+  group_by(modelo) %>%
+  mutate(
+    residuo = residuo/sd(residuo)
+  ) %>%
+  ggplot(aes(x = x, y = residuo, colour = modelo)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~modelo) +
+  ylim(c(-6, 6)) +
+  theme_minimal()
+
+(patchwork::plot_spacer() + grafico_y_x_curvas )/grafico_de_residuos
+```
+
+
+---
+
+## Transformações Não Lineares dos Preditores
+
+### Exemplo: Regressão Polinomial
+
+.pull-left-letrinha[
+Modelo real: $y = 500 + 0.4(x-10)^3$ 
+
+```{r, fig.height=4, fig.width=5}
+set.seed(1)
+y_x_poly <- tibble(
+  x = runif(30, 0, 20),
+  y = 500 + 0.4 * (x-10)^3 + rnorm(30, sd = 50)
+)
+
+
+grafico_y_x_poly <- y_x_poly %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_point( size = 3) 
+
+grafico_y_x_poly
+```
+
+]
+
+.pull-right-letrinha[
+Modelo proposto: $y = \beta_0 + \beta_1x + \beta_2x^2 + \beta_3x^3$ 
+
+
+```{r, fig.height=4, fig.width=6}
+
+grafico_y_x_poly_curvas <- grafico_y_x_poly +
+  geom_smooth(aes(colour = "y ~ x"), method = "lm", se = FALSE, formula = y ~ x) +
+  geom_smooth(aes(colour = "y ~ poly(x, 2)"), method = "lm", se = FALSE, formula = y ~ poly(x, 2)) +
+  geom_smooth(aes(colour = "y ~ poly(x, 3)"), method = "lm", se = FALSE, formula = y ~ poly(x, 3)) +
+  labs(colour = "Modelo") 
+
+grafico_y_x_poly_curvas
+```
+
+]
+
+
+.letrinha[
+```{r, echo = TRUE}
+# lembrete: exercício 14 do script!
+```
+
+]
+
+---
+
+## Transformações Não Lineares dos Preditores
+
+### Exemplo: Regressão Polinomial
+
+.pull-left-letrinha[
+Modelo real: $y = 500 + 0.4(x-10)^3$ 
+
+
+```{r, fig.height=4, fig.width=5}
+grafico_y_x_poly
+```
+
+]
+
+.pull-right-letrinha[
+Modelo proposto: $y = \beta_0 + \beta_1x + \beta_2x^2 + \beta_3x^3$ 
+
+```{r}
+y_x_poly %>%
+  mutate(
+    y = y,
+    x = x,
+    x2 = x^2,
+    x3 = x^3
+  ) %>%
+  head(7) %>%
+  relocate(y, .before = x) %>%
+  knitr::kable(format = "html", escape = FALSE, digits = 1) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
+  kableExtra::kable_styling(font_size = 16)
+```
+
+]
+
+.letrinha[
+```{r, echo = TRUE}
+# lembrete: exercício 14 do script!
+```
+]
+
+
+---
+
+
+## Transformações Não Lineares dos Preditores
+
+### Gráfico de Resíduos
+
+```{r,  message = FALSE, warning=FALSE, fig.width=11, fig.height=6, fig.align="center"}
+mod_poly_1 <- lm(y ~ x, data = y_x_poly)
+mod_poly_2 <- lm(y ~ poly(x, 2), data = y_x_poly)
+mod_poly_3 <- lm(y ~ poly(x, 3), data = y_x_poly)
+
+y_x_com_preds <- y_x_poly %>%
+  mutate(
+    `y ~ x` = predict(mod_poly_1, .),
+    `y ~ poly(x, 2)` = predict(mod_poly_2, .),
+    `y ~ poly(x, 3)` = predict(mod_poly_3, .)
+  )
+
+grafico_de_residuos <- y_x_com_preds %>%
+  pivot_longer(contains("y ~ "), names_to = "modelo", values_to = "pred") %>%
+  mutate(
+    residuo = y - pred
+  ) %>%
+  group_by(modelo) %>%
+  mutate(
+    residuo = residuo/sd(residuo)
+  ) %>%
+  ggplot(aes(x = x, y = residuo, colour = modelo)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(~modelo) +
+  ylim(c(-6, 6)) +
+  theme_minimal()
+
+(patchwork::plot_spacer() + patchwork::plot_spacer()+ grafico_y_x_poly_curvas+theme(legend.position = "right") )/grafico_de_residuos
+```
+
+
+---
+
+## Interações
+
+Interação entre duas variáveis explicativas: `Species` e `Sepal.Length`
+
+```{r, out.height=180, out.height=330, fig.height=2.5, fig.width=4.5, fig.align="center"}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  geom_smooth(method = "lm", aes(colour = Species), se = FALSE) +
+  theme_minimal(10)
+```
+
+
+
+---
+
+## Interações
+
+Modelo proposto (Matemático): Seja `y = Sepal.Width` e `x = Sepal.Length`,
+
+$$\small \begin{array}{l} y = \beta_0 + \beta_1x\end{array}$$
+
+
+
+```{r, out.height=180, out.height=260, fig.height=2, fig.width=4, fig.align="center"}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  theme_minimal(10)
+```
+
+
+Modelo proposto (em R): `Sepal.Width ~ Sepal.Length`
+
+```{r, echo = TRUE}
+# lembrete: exercícios 14 ao 17 do script!
+```
+
+---
+
+## Interações
+
+Modelo proposto (Matemático): Seja `y = Sepal.Width` e `x = Sepal.Length`,
+
+$$\small \begin{array}{l} y = \beta_0 + \beta_1x + \beta_2I_{versicolor} + \beta_3I_{virginica}\end{array}$$
+
+
+```{r, out.height=180, out.height=260, fig.height=2, fig.width=4, fig.align="center"}
+mod_iris <- lm(Sepal.Width ~ Sepal.Length + Species, data = iris)
+
+iris %>%
+  mutate(
+    pred = predict(mod_iris, .) 
+  ) %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  geom_line(aes(y = pred, colour = Species), size = 1) + 
+  theme_minimal(10)
+```
+
+
+Modelo proposto (em R): `Sepal.Width ~ Sepal.Length + Species`
+
+```{r, echo = TRUE}
+# lembrete: exercícios 14 ao 17 do script!
+```
+
+
+---
+
+## Interações
+
+Modelo proposto (Matemático): Seja `y = Sepal.Width` e `x = Sepal.Length`,
+
+$$\small \begin{array}{l} y = \beta_0 + \beta_1x + \beta_2I_{versicolor} + \beta_3I_{virginica} + \beta_4\color{red}{xI_{versicolor}} + \beta_5\color{red}{xI_{virginica}}\end{array}$$
+
+
+```{r, out.height=180, out.height=260, fig.height=2, fig.width=4, fig.align="center"}
+iris %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  geom_smooth(method = "lm", aes(colour = Species), se = FALSE) +
+  theme_minimal(10)
+```
+
+
+Modelo proposto (em R): `Sepal.Width ~ Sepal.Length * Species`
+
+```{r, echo = TRUE}
+# lembrete: exercícios 14 ao 17 do script!
+```
+
+---
+
+## Heterocedasticidade
+
+```{r, fig.height=7, fig.width=12}
+set.seed(2)
+hetero_df <- tibble(
+  x = runif(50),
+  y = rnorm(50, mean = x, sd = x * 0.5)
+)
+
+ggplot(hetero_df, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+---
+
+## Heterocedasticidade
+
+
+```{r, fig.height=7, fig.width=12}
+library(broom)
+hetero_mod <- lm(y ~ x, data = hetero_df)
+hetero_com_predicoes <- augment(hetero_mod)
+graf <-hetero_com_predicoes %>%
+  ggplot(aes(x = x, y = .resid)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "Y ~ X")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(0, 1)) +
+  ylim(c(-2, 2))
+
+hetero_mod_log <- lm(log(y) ~ x, data = hetero_df)
+hetero_log_com_predicoes <- augment(hetero_mod_log)
+graf_log <-hetero_log_com_predicoes %>%
+  ggplot(aes(x = x, y = `log(y)` - .fitted)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "log(Y) ~ X")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(0, 1)) +
+  ylim(c(-2, 2))
+
+
+graf+graf_log
+```
+
+
+
+---
+
+## Heterocedasticidade
+
+```{r, fig.height=7, fig.width=12}
+modelo_log <- lm(log(dist) ~ log(speed), data = cars)
+cars_log_com_predicoes <- augment(modelo_log)
+graf <-cars_com_predicoes %>%
+  ggplot(aes(x = speed, y = .resid)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "dist ~ speed")+
+  geom_point(size = 2) +
+  theme_minimal(18) +
+  xlim(c(4, 26))
+
+
+graf_log <- cars_log_com_predicoes %>%
+  ggplot(aes(x = `log(speed)`, y = `log(dist)` - .fitted)) +
+  labs(x = "Valores preditos", y = "Resíduos", title = "log(dist) ~ speed")+
+  geom_point(size = 2) +
+  theme_minimal(18)
+
+
+graf+graf_log
+```
+
+
+
+---
+
+## Heterocedasticidade
+
+### Problema
+
+- O estimador 
+$\hat{\sigma}_{\beta_1} = \sqrt{\frac{EQM}{\sum(x_i - \bar{x})^2}}$ deixa de ter as melhores propriedades. Poderíamos ter conclusões estranhas para $\beta_1$.
+
+### Diagnóstico
+
+- Visualização dos resíduos;
+- Testes formais (Breuch-Pagan, White, etc)
+
+### Tratamentos
+
+- Transformações na variável resposta. log(y), sqrt(y), 1/y, etc;
+- Mínimos Quadrados Ponderados/Generalizados
+
+
+---
+
+## Multicolinearidade
+
+.pull-left[
+
+```{r, message = FALSE, warning=FALSE, fig.width=4, fig.height=4}
+Credit %>%
+  select(Balance, Age, Limit, Rating) %>%
+  GGally::ggpairs() +
+  theme_minimal(14)
+```
+
+]
+
+.pull-right[
+
+Modelo 1: sem colineares
+
+```{r}
+modelo_multicolinearidade1 <- lm(Balance ~ Limit + Age, data = Credit)
+modelo_multicolinearidade2 <- lm(Balance ~ Limit + Rating, data = Credit)
+
+tidy(modelo_multicolinearidade1) %>%
+  mutate_if(is.numeric, round, digits = 2) %>%
+  mutate(
+    std.error = kableExtra::cell_spec(std.error, "html", background_as_tile = FALSE, color = ifelse(term == "Limit", "white", "black"), background = ifelse(term == "Limit", "darkred", "white"), align = "r")
+  ) %>%
+  knitr::kable(format = "html", escape = FALSE) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
+  kableExtra::kable_styling(font_size = 13)
+```
+
+Modelo 2: com colineares
+
+```{r}
+tidy(modelo_multicolinearidade2) %>%
+  mutate_if(is.numeric, round, digits = 2) %>%
+  mutate(
+    std.error = kableExtra::cell_spec(std.error, "html", background_as_tile = FALSE, color = ifelse(term == "Limit", "white", "black"), background = ifelse(term == "Limit", "darkred", "white"), align = "r")
+  )  %>%
+  knitr::kable(format = "html", escape = FALSE) %>%
+  kableExtra::collapse_rows(columns = 1, valign = "middle") %>%
+  kableExtra::kable_styling(font_size = 13)
+```
+
+]
+
+Problema: Instabilidade numérica, desvios padrão inflados e interpretação comprometida.
+
+Soluções: eliminar uma das variáveis muito correlacionadas ou Consultar o VIF (Variance Inflation Factor)
+
+---
+
+## Multicolinearidade
+
+### VIF (Variance Inflation Factor)
+
+Detecta preditores que são combinações lineares de outros preditores.
+
+
+**Procedimento:** Para cada preditor $X_j$,
+
+1) Ajusta regressão linear com as demais: `lm(X_j ~ X_1 + ... + X_p)`.
+
+2) Calcula-se o R-quadrado dessa regressão e aplica a fórmula abaixo
+
+$$\small VIF(\hat{\beta}_j) = \frac{1}{1 - R^2_{X_j|X_{-j}}}$$
+
+3) Remova o preditor se VIF maior que 5 (regra de bolso).
+
+```{r, echo = TRUE}
+# lembrete: exercícios 18 do script!
+```
+
+
+
+.footnote[
+Ver [ISL](https://www.ime.unicamp.br/~dias/Intoduction%20to%20Statistical%20Learning.pdf) página 101.
+]
+
 
 ---
 
@@ -1711,7 +2359,7 @@ $$
 
 ```{r, eval = FALSE, echo = TRUE}
 ### No R:
-logistic_reg() %>% fit(spam ~ exclamacoes, data=dt_spam)
+glm(spam ~ exclamacoes, data=dt_spam, family = "binomial")
 ```
 
 ]
