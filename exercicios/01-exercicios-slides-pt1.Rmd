@@ -34,7 +34,7 @@ help(Boston)
 Faça um gráfico de dispersão entre `medv` e `rm`.
 
 ```{r}
-
+mod_simples <- lm(medv ~ rm, data = Boston)
 ```
 
 ## Exercício 2
@@ -42,7 +42,7 @@ Faça um gráfico de dispersão entre `medv` e `rm`.
 Ajuste um modelo de regressão linear simples utilizando `medv` como resposta e `rm` como explicativa e guarde em objeto chamado `mod_simples`. Consulte o `summary(mod_simples)` em seguida.
 
 ```{r}
-
+summary(mod_simples)
 ```
 
 ## Exercício 3
@@ -67,7 +67,7 @@ Consulte as saídas das funções
 - `augment(mod_simples)`
 
 ```{r}
-
+augment(mod_simples)
 ```
 
 ## Exercício 5
@@ -75,6 +75,14 @@ Consulte as saídas das funções
 Usando o data.frame gerado por `augment(mod_simples)` faça um gráfico de `medv` versus `rm` e em seguida desenhe a reta ajustada do `mod_simples`.
 
 ```{r}
+reta <- function(rm) -34.671 + 9.102*rm
+
+augment(mod_simples) %>%
+  ggplot(aes(x = rm)) +
+  geom_point(aes(y = medv)) +
+  geom_abline(intercept = -34, slope = 9.102)
+  # geom_point(aes(y = .fitted), colour = "purple") +
+  # geom_function(fun = reta, colour = "red")
 
 ```
 

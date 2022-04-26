@@ -137,11 +137,18 @@ expand.grid(
   Age = 20:100
 ) %>%
   mutate(
-    predicao = predict(estimador_de_saldo, .)
+    predicao = predict(estimador_de_saldo, .),
+    decisao = predicao > 600
   ) %>%
   ggplot(aes(Age, Income)) +
   geom_jitter(aes(colour = decisao))
 ```
+
+
+
+
+
+
 
 ## Exemplo 3: Pinguins (ANOVA)
 
@@ -166,7 +173,6 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm, colour = species)) +
   theme_minimal()
 ```
 
-
 ```{r}
 modelo_para_nadadeiras <- lm(flipper_length_mm ~ species, data = penguins)
 summary(modelo_para_nadadeiras)
@@ -174,6 +180,78 @@ summary(modelo_para_nadadeiras)
 
 ```{r}
 tbl_regression(modelo_para_nadadeiras)
+```
+
+
+## Exemplo 4: log
+
+```{r}
+set.seed(1)
+dados <- tibble(
+  x = runif(60),
+  y = 10 + 0.5*log(x) + rnorm(30, sd = 0.1)
+)
+
+dados
+```
+
+```{r}
+grafico_y_x <- dados %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_point( size = 3) 
+
+grafico_y_x +
+  geom_smooth(aes(colour = "y ~ x"), method = "lm", se = FALSE, formula = y ~ x) +
+  geom_smooth(aes(colour = "y ~ log(x)"), method = "lm", se = FALSE, formula = y ~ log(x)) +
+  labs(colour = "Modelo") +
+  theme(legend.position = "right") 
+```
+
+```{r}
+dados <- dados %>%
+  mutate(
+    logx = log(x)
+  )
+
+modelo1 <- lm(y ~ x, data = dados)
+modelo2 <- lm(y ~ logx, data = dados)
+modelo3 <- lm(y ~ log(x), data = dados)
+```
+
+```{r}
+summary(modelo1)
+```
+
+
+## Exemplo 5: polinomios
+
+```{r}
+set.seed(1)
+dados_poly <- tibble(
+  x = runif(30, 0, 20),
+  y = 500 + 0.4 * (x-10)^3 + rnorm(30, sd = 50)
+)
+
+dados_poly %>%
+  ggplot(aes(x = x, y = y)) + 
+  geom_point( size = 3) 
+```
+
+```{r}
+dados_poly <- dados_poly %>%
+  mutate(
+    x2 = x^2,
+    x3 = x^3
+  )
+
+modelo_poly1 <- lm(y ~ x, data = dados_poly)
+modelo_poly2 <- lm(y ~ x + x2 + x3, data = dados_poly)
+modelo_poly3 <- lm(y ~ poly(x, 3, raw = TRUE), data = dados_poly)
+```
+
+```{r}
+summary(modelo_poly1)
+model.matrix(y ~ poly(x, 3, raw = TRUE), data = dados_poly)
 ```
 
 

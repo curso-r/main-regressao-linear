@@ -1684,7 +1684,7 @@ summary(modelo_boston)
 
 ### Preditor com apenas 2 categorias
 
-Saldo médio no cartão de crédito é diferente entre homens e mulheres?
+Tamanho das nadadeiras de pinguins são diferentes entre os sexos?
 
 ```{r, fig.height=1.5}
 library(palmerpenguins)
