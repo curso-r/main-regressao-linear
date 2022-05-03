@@ -2591,6 +2591,35 @@ Para cada exclamação a mais no e-mail, a chance de ser spam aumenta em 4%.
 
 ---
 
+## Regressão Logística - Interpretação
+
+```{r, echo=TRUE}
+gtsummary::tbl_regression(modelo)
+```
+
+
+```{r, echo=TRUE}
+gtsummary::tbl_regression(modelo, exponentiate = TRUE)
+```
+
+---
+
+## Regressão Logística - Interpretação
+
+```{r, echo=FALSE}
+churn <- fit
+```
+
+```{r, echo=TRUE}
+gtsummary::tbl_regression(churn)
+```
+
+```{r, echo=TRUE}
+gtsummary::tbl_regression(churn, exponentiate = TRUE)
+```
+
+---
+
 # Regressão Logística - Predições
 
 O "produto final" será um vetor de probabilidades estimadas.
