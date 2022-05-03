@@ -1,7 +1,7 @@
 ---
 title: "penguins"
 author: "Athos"
-date: "05/09/2020"
+date: "03/05/2022"
 output: html_document
 ---
 
@@ -32,7 +32,7 @@ skim(penguins)
 ```
 
 ```{r, echo = FALSE, warning=FALSE, message=FALSE, cache=TRUE}
-penguins %>% ggpairs()
+penguins %>% ggpairs(mapping = aes(colour = species))
 ```
 
 
@@ -41,13 +41,14 @@ penguins %>% ggpairs()
 ```{r}
 penguins %>%
   count(species, island) %>%
-  tidyr::complete(species, island, fill = list(species = 0, island = 0)) %>%
+  mutate(species = as.character(species),
+         island = as.character(island)) %>%
+  tidyr::complete(species, island, fill = list(species = "Unknown", island = "Unknown")) %>%
   mutate(n = coalesce(n, 0L)) %>%
   ggplot(aes(y = n, x = island)) +
   geom_col() +
   facet_grid(~species) 
 ```
-
 
 # Variável resposta: Bill length
 
@@ -117,11 +118,11 @@ vif(mod1)
 plot(mod1)
 ```
 
-## Passo 2) retira variáveis com vif alto (body_mass_g)
+## Passo 2) retira variáveis com vif alto (species:year)
 
 ```{r}
 
-mod2 <- lm(bill_length_mm ~ species*(. - island - body_mass_g), data = penguins)
+mod2 <- lm(bill_length_mm ~ species*(. - island - year) + year, data = penguins)
 
 summary(mod2)
 ```
@@ -141,7 +142,7 @@ plot(mod2)
 
 ```{r}
 
-mod3 <- lm(bill_length_mm ~ species*(. - island - body_mass_g - year), data = penguins)
+mod3 <- lm(bill_length_mm ~ species*(. - island - year - flipper_length_mm) + year + flipper_length_mm, data = penguins)
 
 summary(mod3)
 ```
@@ -159,7 +160,7 @@ plot(mod3)
 
 ```{r}
 
-mod4 <- lm(bill_length_mm ~ species*(. - island - body_mass_g - year - bill_depth_mm), data = penguins)
+mod4 <- lm(bill_length_mm ~ . + species*sex, data = penguins)
 
 summary(mod4)
 ```
@@ -176,7 +177,7 @@ plot(mod4)
 
 ```{r}
 
-mod5 <- lm(bill_length_mm ~ species*(. - island - body_mass_g - year - bill_depth_mm), data = penguins[-294,])
+mod5 <- lm(bill_length_mm ~ . + species*sex, data = penguins[-294,])
 
 summary(mod5)
 ```
@@ -187,10 +188,10 @@ plot(mod5)
 ```
 
 
-## Passo 6) Elimina termos não significantes (species:sex)
+## Passo 6) Elimina um termo não significante (island)
 
 ```{r}
-mod6 <- lm(bill_length_mm ~ species * flipper_length_mm + sex, data = penguins[-294,])
+mod6 <- lm(bill_length_mm ~ . + species*sex - island, data = penguins[-294,])
 
 summary(mod6)
 ```
@@ -204,6 +205,25 @@ mod6 %>%
 ```
 
 
+
+## Passo 7) Elimina termos não significantes
+
+```{r}
+mod7 <- lm(bill_length_mm ~ . + species*sex - island - year, data = penguins[-294,])
+
+summary(mod7)
+```
+
+```{r}
+mod7 %>%
+  augment() %>%
+  ggplot(aes(x = flipper_length_mm, colour = species, shape = sex)) +
+  geom_point(aes(y = bill_length_mm), show.legend = FALSE) +
+  geom_line(aes(y = .fitted), show.legend = FALSE)
+```
+
+
+
 ```{r}
 lista_de_modelos <- list(
   mod1,
@@ -211,12 +231,19 @@ lista_de_modelos <- list(
   mod3,
   mod4,
   mod5,
-  mod6
+  mod6,
+  mod7
 )
 modelsummary::modelsummary(lista_de_modelos)
 ```
 
 ```{r}
-modelsummary::modelplot(lista_de_modelos[-1])
+modelsummary::modelplot(lista_de_modelos[5:7], coef_omit = "Intercept")
+```
+
+```{r}
+library(gtsummary)
+
+tbl_regression(mod7)
 ```
 

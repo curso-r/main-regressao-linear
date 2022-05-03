@@ -158,8 +158,19 @@ penguins %>% select(species, flipper_length_mm)
 ```
 
 ```{r}
+summary(lm(flipper_length_mm ~ sex, data = penguins))
+mm <- model.matrix(flipper_length_mm ~ sex, data = penguins)
+
+d <- cbind(na.omit(penguins)[,], mm[, ])
+
+d %>% ggplot(aes(x = sexmale, y = flipper_length_mm)) + geom_point() +
+  stat_smooth(method = "lm", se = FALSE)
+```
+
+```{r}
 penguins %>%
-  group_by(species) %>%
+  na.omit() %>%
+  group_by(sex) %>%
   summarise(
     n = n(),
     flipper_length_mm_media = mean(flipper_length_mm, na.rm = TRUE)
@@ -176,11 +187,22 @@ ggplot(penguins, aes(x = species, y = flipper_length_mm, colour = species)) +
 ```{r}
 modelo_para_nadadeiras <- lm(flipper_length_mm ~ species, data = penguins)
 summary(modelo_para_nadadeiras)
+
+penguins %>%
+  group_by(species) %>%
+  summarise(
+    media_flipper = mean(flipper_length_mm, na.rm = TRUE)
+  )
 ```
 
 ```{r}
 tbl_regression(modelo_para_nadadeiras)
 ```
+
+```{r}
+plot(modelo_para_nadadeiras)
+```
+
 
 
 ## Exemplo 4: log
@@ -190,7 +212,10 @@ set.seed(1)
 dados <- tibble(
   x = runif(60),
   y = 10 + 0.5*log(x) + rnorm(30, sd = 0.1)
-)
+) %>%
+  mutate(
+    logx = log(x)
+  )
 
 dados
 ```
@@ -222,6 +247,9 @@ modelo3 <- lm(y ~ log(x), data = dados)
 summary(modelo1)
 ```
 
+```{r}
+plot(modelo1)
+```
 
 ## Exemplo 5: polinomios
 
@@ -246,13 +274,41 @@ dados_poly <- dados_poly %>%
 
 modelo_poly1 <- lm(y ~ x, data = dados_poly)
 modelo_poly2 <- lm(y ~ x + x2 + x3, data = dados_poly)
-modelo_poly3 <- lm(y ~ poly(x, 3, raw = TRUE), data = dados_poly)
+modelo_poly3 <- lm(y ~ poly(x, 3), data = dados_poly)
 ```
 
 ```{r}
-summary(modelo_poly1)
+summary(modelo_poly3)
 model.matrix(y ~ poly(x, 3, raw = TRUE), data = dados_poly)
 ```
+
+```{r}
+plot(modelo_poly3)
+```
+
+
+
+
+## Exemplo 6: interação
+
+```{r}
+mod_iris <- lm(Sepal.Width ~ Sepal.Length * Species, data = iris)
+
+iris %>%
+  mutate(
+    pred = predict(mod_iris, .) 
+  ) %>%
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point(aes(colour = Species)) +
+  geom_smooth(method = "lm", se = FALSE, colour = "black") +
+  geom_line(aes(y = pred, colour = Species), size = 1) + 
+  theme_minimal(10)
+```
+
+```{r}
+summary(mod_iris)
+```
+
 
 
 ## Visao
