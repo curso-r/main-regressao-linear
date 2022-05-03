@@ -2552,7 +2552,24 @@ Exemplos:
 
 <br/>
 
-Spam: $\frac{p(\text{11 exclamações})}{1 - p(\text{11 exclamações})} = \frac{p(\text{10 exclamações})}{1 - p(\text{10 exclamações})}  * e^{\beta_1}$
+Spam: $\log\Bigg(\frac{p(\text{11 exc})}{1 - p(\text{11 exc})}\Bigg) - \log\Bigg(\frac{p(\text{10 exc})}{1 - p(\text{10 exc})}\Bigg) = \beta_1$
+
+<br/>
+
+Inadimplência: $\log\Bigg(\frac{p(\text{empregado})}{1 - p(\text{empregado})}\Bigg) - \log\Bigg(\frac{p(\text{desempregado})}{1 - p(\text{desempregado})}\Bigg) = \beta_1$
+
+
+---
+
+## Regressão Logística - Interpretação
+
+Os coeficientes da regressão logística representam mudanças percentuais nas **chances.**
+
+Exemplos:
+
+<br/>
+
+Spam: $\frac{p(\text{11 exc})}{1 - p(\text{11 exc})} = \frac{p(\text{10 exc})}{1 - p(\text{10 exc})}  * e^{\beta_1}$
 
 <br/>
 
@@ -2582,10 +2599,24 @@ summary(modelo)
 
 ## Regressão Logística - Interpretação
 
-$$\frac{p(\text{11 exclamações})}{1 - p(\text{11 exclamações})} = \frac{p(\text{10 exclamações})}{1 - p(\text{10 exclamações})}  * e^{0.040325}$$
+$$\log\Bigg(\frac{p(\text{11 exc})}{1 - p(\text{11 exc})}\Bigg) - \log\Bigg(\frac{p(\text{10 exc})}{1 - p(\text{10 exc})}\Bigg) = 0.040325$$
+
 ou
 
-$$\frac{p(\text{11 exclamações})}{1 - p(\text{11 exclamações})} = \frac{p(\text{10 exclamações})}{1 - p(\text{10 exclamações})}  * 1.04$$
+$$\log\Bigg(\frac{\frac{p(\text{11 exc})}{1 - p(\text{11 exc})}}{\frac{p(\text{10 exc})}{1 - p(\text{10 exc})}}\Bigg) = 0.040325$$
+
+ou...
+
+
+
+---
+
+## Regressão Logística - Interpretação
+
+$$\frac{p(\text{11 exc})}{1 - p(\text{11 exc})} = \frac{p(\text{10 exc})}{1 - p(\text{10 exc})}  * e^{0.040325}$$
+ou
+
+$$\frac{p(\text{11 exc})}{1 - p(\text{11 exc})} = \frac{p(\text{10 exc})}{1 - p(\text{10 exc})}  * 1.04$$
 Para cada exclamação a mais no e-mail, a chance de ser spam aumenta em 4%.
 
 
